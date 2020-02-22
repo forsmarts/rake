@@ -7,31 +7,36 @@ var dragMove = function (dx, dy) {
     var bChange = false;
     var newCell;
     if (Math.abs(dx)>Math.abs(dy)) {
-        if (dx - dragData.old_dx > canvas.cellSize / 2) {
+        if (dx - dragData.old_dx > canvas.cellSize / 1.5) {
             newCell = canvas.puzzle.cells[dragData.thisCell.row][dragData.thisCell.column+1];
             bChange = true;
         }
-        else if (dragData.old_dx - dx > canvas.cellSize / 2) {
+        else if (dragData.old_dx - dx > canvas.cellSize / 1.5) {
             newCell = canvas.puzzle.cells[dragData.thisCell.row][dragData.thisCell.column-1];
             bChange = true;
         }
     }
     else {
-        if (dy - dragData.old_dy > canvas.cellSize / 2) {
+        if (dy - dragData.old_dy > canvas.cellSize / 1.5) {
             newCell = canvas.puzzle.cells[dragData.thisCell.row+1][dragData.thisCell.column];
             bChange = true;
         }
-        else if (dragData.old_dy - dy > canvas.cellSize / 2) {
+        else if (dragData.old_dy - dy > canvas.cellSize / 1.5) {
             newCell = canvas.puzzle.cells[dragData.thisCell.row-1][dragData.thisCell.column];
             bChange = true;
         }
     }
     if (bChange) {
         if (newCell.number == dragData.thisCell.number + 1) {
-            dragData.thisCell.number=-1;
+            dragData.thisCell.number = -1;
             newCell.number++;
+            dragData.thisCell.element.undrag();
             canvas.render(Snap('#mainGrid'));
         }   
+    } else {
+        position = canvas.position(dragData.thisCell);
+        dragData.thisCell.element.attr('x', position.x + dx);
+        dragData.thisCell.element.attr('y', position.y + dy);
     }
             
     if (canvas.puzzle.isSolved()) {
@@ -43,13 +48,18 @@ var dragMove = function (dx, dy) {
 var dragStart = function (cx, cy) {
     dragData.old_dy = 0;
     dragData.old_dx = 0;
+    console.log("cx=",cx,"cy=",cy);
     var x = Math.floor((cx - mainGrid.getBoundingClientRect().left) / canvas.cellSize);
     var y = Math.floor((cy - mainGrid.getBoundingClientRect().top) / canvas.cellSize);
+    console.log("x=",x,"y=",y);
     dragData.thisCell = canvas.puzzle.cells[y][x];
     this.data('origTransform', this.transform().local);
 }
 
 var dragStop = function () {
+    position = canvas.position(dragData.thisCell);
+    dragData.thisCell.element.attr('x', position.x);
+    dragData.thisCell.element.attr('y', position.y);
 }
 
 cRakeCanvas = function (puzzle) {
@@ -85,8 +95,8 @@ cRakeCanvas = function (puzzle) {
 
 cRakeCanvas.prototype.render = function (snap) {
     this.snap = snap;
-    this.cellSize = Math.min((snap.node.clientHeight - this.vertOffset) / this.puzzle.gridXSize, snap.node.clientWidth / this.puzzle.gridYSize);
-    //this.ballSize = this.cellSize / 3;
+    this.cellSize = Math.min((snap.node.clientHeight - this.vertOffset) / this.puzzle.gridXSize, 
+                             snap.node.clientWidth / this.puzzle.gridYSize);
     this.ballSize = this.cellSize / 2;
     this.puzzle.element = this.drawGoal(this.puzzle.goal);
     this.puzzle.element = this.drawBoard(this.puzzle.gridYSize, this.puzzle.gridXSize);
@@ -121,14 +131,17 @@ cRakeCanvas.prototype.drawBoard = function (gridYSize, gridXSize) {
     return board;
 }
 
-cRakeCanvas.prototype.drawCell = function (cell) {
+cRakeCanvas.prototype.position = function (cell) {
     // The center of the cell
-    position = {
+    return {
         //x: cell.column * this.cellSize + this.cellSize / 2,
         //y: cell.row * this.cellSize + this.cellSize / 2
         x: cell.column * this.cellSize + this.cellSize / 2 - this.ballSize / 2,
         y: cell.row * this.cellSize + this.cellSize / 2 - this.ballSize / 2 + this.vertOffset
-    }
+    }}
+
+cRakeCanvas.prototype.drawCell = function (cell) {
+    position = this.position(cell);
     var lines = []
     for (side in this.opposite) {
         if ((cell.direction != side || cell.isLast) && cell.prevDirection != this.opposite[side]) {
@@ -137,6 +150,7 @@ cRakeCanvas.prototype.drawCell = function (cell) {
     }
     cell.lines = lines;
     cell.element = this.drawNumber(position, cell.number);
+    cell.element.drag(dragMove, dragStart, dragStop);
 }
 
 cRakeCanvas.prototype.drawNumber = function (position, number) {
@@ -152,6 +166,5 @@ cRakeCanvas.prototype.drawNumber = function (position, number) {
     return circle;
     */
     var image = this.snap.image(imageurl, position.x, position.y, this.ballSize, this.ballSize);
-    image.drag(dragMove, dragStart, dragStop);
     return image;
 }
