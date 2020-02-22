@@ -1,36 +1,34 @@
 // Object which controls rendering of puzzle to the snap canvas
 
-var thisCell = new cRakeCell();
-var newCell = new cRakeCell();
-var old_dy = old_dx = 0;
-var bChange = false;
-var vertOffset = 50;
+// dragData - data passed inside drag/drop processing
+var dragData = {thisCell: null, old_dx: 0, old_dy: 0};
 
-var move = function (dx, dy) {
+var dragMove = function (dx, dy) {
+    var bChange = false;
+    var newCell;
     if (Math.abs(dx)>Math.abs(dy)) {
-        if (dx - old_dx > canvas.cellSize / 2) {
-            newCell = canvas.puzzle.cells[thisCell.row][thisCell.column+1];
+        if (dx - dragData.old_dx > canvas.cellSize / 2) {
+            newCell = canvas.puzzle.cells[dragData.thisCell.row][dragData.thisCell.column+1];
             bChange = true;
         }
-        else if (old_dx - dx > canvas.cellSize / 2) {
-            newCell = canvas.puzzle.cells[thisCell.row][thisCell.column-1];
+        else if (dragData.old_dx - dx > canvas.cellSize / 2) {
+            newCell = canvas.puzzle.cells[dragData.thisCell.row][dragData.thisCell.column-1];
             bChange = true;
         }
     }
     else {
-        if (dy - old_dy > canvas.cellSize / 2) {
-            newCell = canvas.puzzle.cells[thisCell.row+1][thisCell.column];
+        if (dy - dragData.old_dy > canvas.cellSize / 2) {
+            newCell = canvas.puzzle.cells[dragData.thisCell.row+1][dragData.thisCell.column];
             bChange = true;
         }
-        else if (old_dy - dy > canvas.cellSize / 2) {
-            newCell = canvas.puzzle.cells[thisCell.row-1][thisCell.column];
+        else if (dragData.old_dy - dy > canvas.cellSize / 2) {
+            newCell = canvas.puzzle.cells[dragData.thisCell.row-1][dragData.thisCell.column];
             bChange = true;
         }
     }
     if (bChange) {
-        bChange = false;
-        if (newCell.number == thisCell.number + 1) {
-            thisCell.number=-1;
+        if (newCell.number == dragData.thisCell.number + 1) {
+            dragData.thisCell.number=-1;
             newCell.number++;
             canvas.render(Snap('#mainGrid'));
         }   
@@ -42,15 +40,16 @@ var move = function (dx, dy) {
     }
 } 
 
-var start = function (cx, cy) {
-    old_dy = old_dx = 0;
+var dragStart = function (cx, cy) {
+    dragData.old_dy = 0;
+    dragData.old_dx = 0;
     var x = Math.floor((cx - mainGrid.getBoundingClientRect().left) / canvas.cellSize);
     var y = Math.floor((cy - mainGrid.getBoundingClientRect().top) / canvas.cellSize);
-    thisCell = canvas.puzzle.cells[y][x];
+    dragData.thisCell = canvas.puzzle.cells[y][x];
     this.data('origTransform', this.transform().local);
 }
 
-var stop = function () {
+var dragStop = function () {
 }
 
 cRakeCanvas = function (puzzle) {
@@ -81,11 +80,12 @@ cRakeCanvas = function (puzzle) {
         "9": "images/number9.png",
         "10": "images/number10.png"
     }
+    this.vertOffset = 50;
 }
 
 cRakeCanvas.prototype.render = function (snap) {
     this.snap = snap;
-    this.cellSize = Math.min((snap.node.clientHeight - vertOffset) / this.puzzle.gridXSize, snap.node.clientWidth / this.puzzle.gridYSize);
+    this.cellSize = Math.min((snap.node.clientHeight - this.vertOffset) / this.puzzle.gridXSize, snap.node.clientWidth / this.puzzle.gridYSize);
     //this.ballSize = this.cellSize / 3;
     this.ballSize = this.cellSize / 2;
     this.puzzle.element = this.drawGoal(this.puzzle.goal);
@@ -103,22 +103,21 @@ cRakeCanvas.prototype.drawGoal = function (goal) {
     var n = 0;
     goal.forEach(oneGoal => {
         position = {
-            x: n * vertOffset,
+            x: n * this.vertOffset,
             y: 0
         }         
-        this.snap.image(this.images[oneGoal], position.x, position.y, vertOffset * 0.8, vertOffset * 0.8);
+        this.snap.image(this.images[oneGoal], position.x, position.y, this.vertOffset * 0.8, this.vertOffset * 0.8);
         n++;
     });
 }
 
 cRakeCanvas.prototype.drawBoard = function (gridYSize, gridXSize) {
-    var board = this.snap.rect(0, vertOffset, gridXSize * this.cellSize, gridYSize * this.cellSize);
+    var board = this.snap.rect(0, this.vertOffset, gridXSize * this.cellSize, gridYSize * this.cellSize);
     board.attr({
         fill: "#fff",
         stroke: "#000",
         strokeWidth: 5
     })
-//    board.drag(move, start, stop);
     return board;
 }
 
@@ -128,7 +127,7 @@ cRakeCanvas.prototype.drawCell = function (cell) {
         //x: cell.column * this.cellSize + this.cellSize / 2,
         //y: cell.row * this.cellSize + this.cellSize / 2
         x: cell.column * this.cellSize + this.cellSize / 2 - this.ballSize / 2,
-        y: cell.row * this.cellSize + this.cellSize / 2 - this.ballSize / 2 + vertOffset
+        y: cell.row * this.cellSize + this.cellSize / 2 - this.ballSize / 2 + this.vertOffset
     }
     var lines = []
     for (side in this.opposite) {
@@ -150,10 +149,9 @@ cRakeCanvas.prototype.drawNumber = function (position, number) {
         stroke: "#fff",
         strokeWidth: 0
     })
-    circle.drag(move, start, stop);
     return circle;
     */
     var image = this.snap.image(imageurl, position.x, position.y, this.ballSize, this.ballSize);
-    image.drag(move, start, stop);
+    image.drag(dragMove, dragStart, dragStop);
     return image;
 }
