@@ -69,7 +69,7 @@ cRakeCanvas = function (puzzle) {
         "11": "#c3f",
         "12": "#f3f"
     };
-    this.url = {
+    this.images = {
         "1": "images/number1.png",
         "2": "images/number2.png",
         "3": "images/number3.png",
@@ -106,7 +106,7 @@ cRakeCanvas.prototype.drawGoal = function (goal) {
             x: n * vertOffset,
             y: 0
         }         
-        this.snap.image(this.url[oneGoal], position.x, position.y, vertOffset * 0.8, vertOffset * 0.8);
+        this.snap.image(this.images[oneGoal], position.x, position.y, vertOffset * 0.8, vertOffset * 0.8);
         n++;
     });
 }
@@ -137,11 +137,12 @@ cRakeCanvas.prototype.drawCell = function (cell) {
         }
     }
     cell.lines = lines;
-    //cell.element = this.drawNumber(position, this.colors[cell.number]);
-    cell.element = this.drawNumber(position, this.url[cell.number]);
+    cell.element = this.drawNumber(position, cell.number);
 }
 
-cRakeCanvas.prototype.drawNumber = function (position, url) {
+cRakeCanvas.prototype.drawNumber = function (position, number) {
+    // color = this.colors[number];
+    imageurl = this.images[number];
     /*
     var circle = this.snap.circle(position.x, position.y, this.ballSize);
     circle.attr({
@@ -152,7 +153,7 @@ cRakeCanvas.prototype.drawNumber = function (position, url) {
     circle.drag(move, start, stop);
     return circle;
     */
-    var image = this.snap.image(url, position.x, position.y, this.ballSize, this.ballSize);
+    var image = this.snap.image(imageurl, position.x, position.y, this.ballSize, this.ballSize);
     image.drag(move, start, stop);
     return image;
 }
