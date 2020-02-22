@@ -48,11 +48,9 @@ var dragMove = function (dx, dy) {
 var dragStart = function (cx, cy) {
     dragData.old_dy = 0;
     dragData.old_dx = 0;
-    console.log("cx=",cx,"cy=",cy);
     boardPosition = canvas.boardPosition();
     var x = Math.floor((cx - mainGrid.getBoundingClientRect().left - boardPosition.x) / canvas.cellSize);
     var y = Math.floor((cy - mainGrid.getBoundingClientRect().top - boardPosition.y) / canvas.cellSize);
-    console.log("x=",x,"y=",y);
     dragData.thisCell = canvas.puzzle.cells[y][x];
     this.data('origTransform', this.transform().local);
 }
