@@ -40,7 +40,7 @@ var dragMove = function (dx, dy) {
     }
             
     if (canvas.puzzle.isSolved()) {
-        canvas.puzzle.element.attr({ fill: "#f9f" });
+        canvas.puzzle.boardElement.attr({ fill: "#f9f" });
         $("#btnNextPuzzle").show();
     }
 } 
@@ -49,8 +49,9 @@ var dragStart = function (cx, cy) {
     dragData.old_dy = 0;
     dragData.old_dx = 0;
     console.log("cx=",cx,"cy=",cy);
-    var x = Math.floor((cx - mainGrid.getBoundingClientRect().left) / canvas.cellSize);
-    var y = Math.floor((cy - mainGrid.getBoundingClientRect().top) / canvas.cellSize);
+    boardPosition = canvas.boardPosition();
+    var x = Math.floor((cx - mainGrid.getBoundingClientRect().left - boardPosition.x) / canvas.cellSize);
+    var y = Math.floor((cy - mainGrid.getBoundingClientRect().top - boardPosition.y) / canvas.cellSize);
     console.log("x=",x,"y=",y);
     dragData.thisCell = canvas.puzzle.cells[y][x];
     this.data('origTransform', this.transform().local);
@@ -98,8 +99,8 @@ cRakeCanvas.prototype.render = function (snap) {
     this.cellSize = Math.min((snap.node.clientHeight - this.vertOffset) / this.puzzle.gridXSize, 
                              snap.node.clientWidth / this.puzzle.gridYSize);
     this.ballSize = this.cellSize / 2;
-    this.puzzle.element = this.drawGoal(this.puzzle.goal);
-    this.puzzle.element = this.drawBoard(this.puzzle.gridYSize, this.puzzle.gridXSize);
+    this.puzzle.goalElement = this.drawGoal(this.puzzle.goal);
+    this.puzzle.boardElement = this.drawBoard(this.puzzle.gridYSize, this.puzzle.gridXSize);
     for (var y = 0; y < this.puzzle.gridYSize; y++) {
         for (var x = 0; x < this.puzzle.gridXSize; x++) {
             if (this.puzzle.cells[y][x].number > 0) {
@@ -131,6 +132,14 @@ cRakeCanvas.prototype.drawBoard = function (gridYSize, gridXSize) {
     return board;
 }
 
+cRakeCanvas.prototype.boardPosition = function () {
+    // Top left corner of the board
+    return {
+        x: this.puzzle.boardElement.attr('x'),
+        y: this.puzzle.boardElement.attr('y')
+    }
+}
+
 cRakeCanvas.prototype.position = function (cell) {
     // The center of the cell
     return {
@@ -138,7 +147,8 @@ cRakeCanvas.prototype.position = function (cell) {
         //y: cell.row * this.cellSize + this.cellSize / 2
         x: cell.column * this.cellSize + this.cellSize / 2 - this.ballSize / 2,
         y: cell.row * this.cellSize + this.cellSize / 2 - this.ballSize / 2 + this.vertOffset
-    }}
+    }
+}
 
 cRakeCanvas.prototype.drawCell = function (cell) {
     position = this.position(cell);
