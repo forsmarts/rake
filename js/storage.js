@@ -1,7 +1,7 @@
 // Object to provide puzzles data
 var cBandsStorage = function(){
   this.puzzles = [];
-  this.currentPuzzle = 0;
+  this.currentPuzzle = parseInt(localStorage.getItem('lastLevel')) | 0;
 }
 
 
@@ -10,6 +10,8 @@ cBandsStorage.prototype.addPuzzle = function(data){
 }
 
 cBandsStorage.prototype.getNext = function(data){
+  this.currentPuzzle = Math.min(this.currentPuzzle, this.puzzles.length  - 1);
+  localStorage.setItem('lastLevel', this.currentPuzzle);
   return this.puzzles[this.currentPuzzle++];
 }
 
