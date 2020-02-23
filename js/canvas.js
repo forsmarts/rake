@@ -1,7 +1,7 @@
 // Object which controls rendering of puzzle to the snap canvas
 
 // dragData - data passed inside drag/drop processing
-var dragData = {thisCell: null, old_dx: 0, old_dy: 0};
+var dragData = {thisCell: null, old_dx: 0, old_dy: 0, touchStart_x: 0, touchStart_y: 0};
 
 var dragMove = function (dx, dy) {
     var bChange = false;
@@ -46,20 +46,35 @@ var dragMove = function (dx, dy) {
     }
 } 
 
-var dragStart = function (cx, cy) {
+var touchMove = function(event) {
+  cx = event.targetTouches.item(0).clientX - dragData.touchStart_x;
+  cy = event.targetTouches.item(0).clientY - dragData.touchStart_y;
+  dragMove(cx, cy);
+}
+
+
+var dragStart = function (cell) {
     dragData.old_dy = 0;
     dragData.old_dx = 0;
-    boardPosition = canvas.boardPosition();
-    var x = Math.floor((cx - mainGrid.getBoundingClientRect().left - boardPosition.x) / canvas.cellSize);
-    var y = Math.floor((cy - mainGrid.getBoundingClientRect().top - boardPosition.y) / canvas.cellSize);
-    dragData.thisCell = canvas.puzzle.cells[y][x];
-    this.data('origTransform', this.transform().local);
+    dragData.thisCell = cell;
 }
+
+
+var touchStart = function (event, cell) {
+    dragStart(cell);
+    dragData.touchStart_x = event.targetTouches.item(0).clientX;
+    dragData.touchStart_y = event.targetTouches.item(0).clientY;
+}
+
 
 var dragStop = function () {
     position = canvas.position(dragData.thisCell);
     dragData.thisCell.element.attr('x', position.x);
     dragData.thisCell.element.attr('y', position.y);
+}
+
+var touchStop = function(event) {
+  dragStop();
 }
 
 cRakeCanvas = function (puzzle) {
@@ -159,10 +174,10 @@ cRakeCanvas.prototype.drawCell = function (cell) {
     }
     cell.lines = lines;
     cell.element = this.drawNumber(position, cell.number);
-    cell.element.drag(dragMove, dragStart, dragStop);
-    cell.element.touchstart(dragStart);
-    cell.element.touchmove(dragMove);
-    cell.element.touchcancel(dragStop);
+    cell.element.drag(dragMove, function() {dragStart(cell);}, dragStop);
+    cell.element.touchstart(function(event) {touchStart(event, cell);});
+    cell.element.touchmove(touchMove);
+    cell.element.touchcancel(touchStop);
 }
 
 cRakeCanvas.prototype.drawNumber = function (position, number) {
