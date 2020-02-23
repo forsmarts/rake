@@ -14,3 +14,4 @@ cBandsStorage.prototype.getNext = function(data){
 }
 
 storage = new cBandsStorage();
+

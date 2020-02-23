@@ -25,7 +25,8 @@ cRakePuzzle.prototype.parseData = function (data) {
 
 cRakePuzzle.prototype.isSolved = function () {
     var nCountNumbers=0;
-    var goal = this.goal;
+    // Copy an array to not modify original
+    var goal = this.goal.slice();
     for (y = 0; y < this.gridYSize; y++) {
         for (x = 0; x < this.gridXSize; x++) {
             nIndex=goal.indexOf(this.cells[y][x].number);
