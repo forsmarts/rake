@@ -117,15 +117,15 @@ cRakeCanvas = function (puzzle) {
         "19": "images/number19.png",
         "20": "images/number20.png"
     }
-    this.vertOffset = 50;
+    this.vOffset = 50;
+    this.hOffset = 2;
 }
 
 cRakeCanvas.prototype.render = function (snap) {
     this.snap = snap;
     this.snap.clear();
-    this.cellSize = Math.min((snap.node.clientHeight - this.vertOffset) / this.puzzle.gridXSize, 
-                             snap.node.clientWidth / this.puzzle.gridYSize);
-    this.ballSize = this.cellSize / 2;
+    this.cellSize = snap.node.clientWidth / this.puzzle.gridXSize - 2 * this.hOffset;
+    this.ballSize = this.cellSize / 1.5;
     this.puzzle.goalElement = this.drawGoal(this.puzzle.goal);
     this.puzzle.boardElement = this.drawBoard(this.puzzle.gridYSize, this.puzzle.gridXSize);
     for (var y = 0; y < this.puzzle.gridYSize; y++) {
@@ -135,22 +135,23 @@ cRakeCanvas.prototype.render = function (snap) {
             }
         }
     }
+    this.snap.node.setAttribute("height", this.snap.getBBox().height);
 }
 
 cRakeCanvas.prototype.drawGoal = function (goal) {
     var n = 0;
     goal.forEach(oneGoal => {
         position = {
-            x: n * this.vertOffset,
+            x: this.hOffset + n * this.vOffset,
             y: 0
         }         
-        this.snap.image(this.images[oneGoal], position.x, position.y, this.vertOffset * 0.8, this.vertOffset * 0.8);
+        this.snap.image(this.images[oneGoal], position.x, position.y, this.vOffset * 0.8, this.vOffset * 0.8);
         n++;
     });
 }
 
 cRakeCanvas.prototype.drawBoard = function (gridYSize, gridXSize) {
-    var board = this.snap.rect(0, this.vertOffset, gridXSize * this.cellSize, gridYSize * this.cellSize);
+    var board = this.snap.rect(this.hOffset, this.vOffset, gridXSize * this.cellSize, gridYSize * this.cellSize);
     board.attr({
         fill: "#fff",
         stroke: "#000",
@@ -172,8 +173,8 @@ cRakeCanvas.prototype.position = function (cell) {
     return {
         //x: cell.column * this.cellSize + this.cellSize / 2,
         //y: cell.row * this.cellSize + this.cellSize / 2
-        x: cell.column * this.cellSize + this.cellSize / 2 - this.ballSize / 2,
-        y: cell.row * this.cellSize + this.cellSize / 2 - this.ballSize / 2 + this.vertOffset
+        x: cell.column * this.cellSize + this.cellSize / 2 - this.ballSize / 2 + this.hOffset,
+        y: cell.row * this.cellSize + this.cellSize / 2 - this.ballSize / 2 + this.vOffset
     }
 }
 
