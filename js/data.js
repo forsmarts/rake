@@ -1,5 +1,65 @@
 // File containing grid data
 storage.addPuzzle({
+  "gridSize": [2,1],
+  "goal": [3],
+  "hint": "Move a tile \"1\" towards a tile \"2\"",
+  "numbers": [
+    [1,2]
+  ]
+});
+
+storage.addPuzzle({
+  "gridSize": [2,2],
+  "goal": [4],
+  "hint": "This works for every tile numbered N moved towards a tile numbered N+1",
+  "numbers": [
+    [-1,1],
+    [2,2]
+  ]
+});
+
+storage.addPuzzle({
+  "gridSize": [3,2],
+  "goal": [5],
+  "hint": "Mind the number above the grid, this is the goal of the level",
+  "numbers": [
+    [2,2,2],
+    [1,1,-1]
+  ]
+});
+
+storage.addPuzzle({
+  "gridSize": [3,3],
+  "goal": [6],
+  "numbers": [
+    [2,2,1],
+    [2,2,2],
+    [-1,1,1]
+  ]
+});
+
+storage.addPuzzle({
+  "gridSize": [4,3],
+  "goal": [7],
+  "numbers": [
+    [2,2,1,-1],
+    [1,4,2,1],
+    [2,3,2,-1]
+  ]
+});
+
+storage.addPuzzle({
+  "gridSize": [4,4],
+  "goal": [8],
+  "numbers": [
+    [3,4,2,1],
+    [2,5,3,2],
+    [2,2,2,-1],
+    [-1,1,1,-1]
+  ]
+});
+
+storage.addPuzzle({
   "gridSize": [4,4],
   "goal": [9],
   "numbers": [
