@@ -121,6 +121,7 @@ cRakeCanvas = function (puzzle) {
 
 cRakeCanvas.prototype.render = function (snap) {
     this.snap = snap;
+    this.snap.clear();
     this.cellSize = Math.min((snap.node.clientHeight - this.vertOffset) / this.puzzle.gridXSize, 
                              snap.node.clientWidth / this.puzzle.gridYSize);
     this.ballSize = this.cellSize / 2;
