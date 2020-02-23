@@ -31,6 +31,7 @@ var dragMove = function (dx, dy) {
             dragData.thisCell.number = -1;
             newCell.number++;
             dragData.thisCell.element.undrag();
+            dragData.thisCell.element.untouchmove();
             canvas.render(Snap('#mainGrid'));
         }   
     } else {
@@ -159,6 +160,9 @@ cRakeCanvas.prototype.drawCell = function (cell) {
     cell.lines = lines;
     cell.element = this.drawNumber(position, cell.number);
     cell.element.drag(dragMove, dragStart, dragStop);
+    cell.element.touchstart(dragStart);
+    cell.element.touchmove(dragMove);
+    cell.element.touchcancel(dragStop);
 }
 
 cRakeCanvas.prototype.drawNumber = function (position, number) {
