@@ -44,6 +44,7 @@ var dragMove = function (dx, dy) {
     if (canvas.puzzle.isSolved()) {
         canvas.puzzle.boardElement.attr({ fill: "#f9f" });
         $("#btnNextPuzzle").show();
+        $("#txtPuzzleHint").hide();
     }
 } 
 

@@ -18,10 +18,13 @@
 <body>
     <div class="container">
         <div class="row text-center">
-            <h2 id="levelNumber"></h2>
+            <h1 id="levelNumber"></h1>
         </div>
         <div class="row text-center">
             <svg id="mainGrid" width="550" height="600" />
+        </div>
+        <div class="row text-center">
+            <h3 id="txtPuzzleHint"></h3>
         </div>
         <div class="row text-center">
             <span id="btnNextPuzzle" class="btn btn-primary btn-lg">Go to next puzzle</span>
@@ -34,10 +37,13 @@
     var goal;
     $(document).ready(function () {
         var fnNextPuzzle = function () {
+            puzzle = storage.getNext();
             $("#btnNextPuzzle").hide();
-            canvas = new cRakeCanvas(new cRakePuzzle(storage.getNext()));
+            $("#txtPuzzleHint").text(puzzle.hint);
+            $("#txtPuzzleHint").show();
+            $("#levelNumber").text("Level " + storage.currentPuzzle);
+            canvas = new cRakeCanvas(new cRakePuzzle(puzzle));
             canvas.render(Snap('#mainGrid'));
-            levelNumber.innerText = "Level " + storage.currentPuzzle;
         }
         $("#btnNextPuzzle").click(fnNextPuzzle);
         fnNextPuzzle();
