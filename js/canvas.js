@@ -88,7 +88,17 @@ cRakeCanvas = function (puzzle) {
         "7": "images/number7.png",
         "8": "images/number8.png",
         "9": "images/number9.png",
-        "10": "images/number10.png"
+        "10": "images/number10.png",
+        "11": "images/number11.png",
+        "12": "images/number12.png",
+        "13": "images/number13.png",
+        "14": "images/number14.png",
+        "15": "images/number15.png",
+        "16": "images/number16.png",
+        "17": "images/number17.png",
+        "18": "images/number18.png",
+        "19": "images/number19.png",
+        "20": "images/number20.png"
     }
     this.vertOffset = 50;
 }
