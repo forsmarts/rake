@@ -39,7 +39,7 @@
         var fnNextPuzzle = function () {
             puzzle = storage.getNext();
             $("#btnNextPuzzle").hide();
-            $("#txtPuzzleHint").text(puzzle.hint);
+            $("#txtPuzzleHint").text(puzzle.hint || " ");
             $("#txtPuzzleHint").show();
             $("#levelNumber").text("Level " + storage.currentPuzzle);
             canvas = new cRakeCanvas(new cRakePuzzle(puzzle));
