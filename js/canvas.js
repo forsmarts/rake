@@ -31,6 +31,7 @@ var dragMove = function (dx, dy) {
             dragData.thisCell.number = -1;
             newCell.number++;
             dragData.thisCell.element.undrag();
+            dragData.thisCell.element.untouchstart();
             dragData.thisCell.element.untouchmove();
             canvas.render(Snap('#mainGrid'));
         }   
@@ -47,9 +48,9 @@ var dragMove = function (dx, dy) {
 } 
 
 var touchMove = function(event) {
-  cx = event.targetTouches.item(0).clientX - dragData.touchStart_x;
-  cy = event.targetTouches.item(0).clientY - dragData.touchStart_y;
-  dragMove(cx, cy);
+    cx = event.targetTouches.item(0).clientX - dragData.touchStart_x;
+    cy = event.targetTouches.item(0).clientY - dragData.touchStart_y;
+    dragMove(cx, cy);
 }
 
 
@@ -188,6 +189,7 @@ cRakeCanvas.prototype.drawCell = function (cell) {
     cell.element.touchstart(function(event) {touchStart(event, cell);});
     cell.element.touchmove(touchMove);
     cell.element.touchcancel(touchStop);
+    cell.element.touchend(touchStop);
 }
 
 cRakeCanvas.prototype.drawNumber = function (position, number) {
