@@ -84,6 +84,7 @@ storage.addPuzzle({
 storage.addPuzzle({
   "gridSize": [5,4],
   "goal": [8,8],
+  "hint": "The goal of the level can contain few numbers - you should have corresponding amount of them in the grid",
   "numbers": [
     [1,4,4,6,5],
     [2,5,3,2,2],
