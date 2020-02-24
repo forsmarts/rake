@@ -12,6 +12,7 @@
     <script src="js/puzzle.js"></script>
     <script src="js/drag.js"></script>
     <script src="js/canvas.js"></script>
+    <script src="js/view.js"></script>
 
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css" />
@@ -36,17 +37,8 @@
     $(document).ready(function () {
         var storage = new cBandsStorage();
         rakeInitData(storage);
-        var fnNextPuzzle = function () {
-            var puzzle = storage.getNext();
-            $("#btnNextPuzzle").hide();
-            $("#txtPuzzleHint").text(puzzle.hint || " ");
-            $("#txtPuzzleHint").show();
-            $("#levelNumber").text("Level " + puzzle.number);
-            var canvas = new cRakeCanvas(puzzle);
-            canvas.render(Snap('#mainGrid'));
-        }
-        $("#btnNextPuzzle").click(fnNextPuzzle);
-        fnNextPuzzle();
+        view = new cRakeView("#levelNumber", '#mainGrid', "#txtPuzzleHint", "#btnNextPuzzle", storage);
+        view.show(storage.getNext());
     });
 
 </script>

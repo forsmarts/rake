@@ -28,8 +28,6 @@ cRakeDragController.prototype.dragMove = function (dx, dy) {
         this.canvas.reRender();
         if (this.puzzle.isSolved()) {
             this.canvas.markSolved();
-            $("#btnNextPuzzle").show();
-            $("#txtPuzzleHint").hide();
         }
     }   
 } 

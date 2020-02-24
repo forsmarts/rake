@@ -1,5 +1,6 @@
 // Object which controls rendering of puzzle to the snap canvas
-var cRakeCanvas = function (puzzle) {
+var cRakeCanvas = function (parent, puzzle) {
+    this.parent = parent;
     this.puzzle = puzzle;
 
     this.IMAGES = {
@@ -57,6 +58,7 @@ cRakeCanvas.prototype.reRender = function () {
 
 cRakeCanvas.prototype.markSolved = function () {
     this.puzzle.boardElement.attr({ fill: "#f9f" });
+    this.parent.markSolved()
 }
 
 cRakeCanvas.prototype.drawGoal = function (goal) {
