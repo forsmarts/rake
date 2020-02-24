@@ -1,82 +1,87 @@
 // Object which controls rendering of puzzle to the snap canvas
 
-// dragData - data passed inside drag/drop processing
-var dragData = {thisCell: null, old_dx: 0, old_dy: 0, touchStart_x: 0, touchStart_y: 0};
+cRakeDragController = function(canvas, cell) {
+  this.cell = cell;
+  this.canvas = canvas;
+  this.old_dx = 0;
+  this.old_dy = 0;
+  this.touchStart_x = 0;
+  this.touchStart_y = 0;
+}
 
-var dragMove = function (dx, dy) {
+cRakeDragController.prototype.dragMove = function (dx, dy) {
     var bChange = false;
     var newCell;
     if (Math.abs(dx)>Math.abs(dy)) {
-        if (dx - dragData.old_dx > canvas.cellSize / 1.5) {
-            newCell = canvas.puzzle.cells[dragData.thisCell.row][dragData.thisCell.column+1];
+        if (dx - this.old_dx > this.canvas.cellSize / 1.5) {
+            newCell = this.canvas.puzzle.cells[this.cell.row][this.cell.column+1];
             bChange = true;
         }
-        else if (dragData.old_dx - dx > canvas.cellSize / 1.5) {
-            newCell = canvas.puzzle.cells[dragData.thisCell.row][dragData.thisCell.column-1];
+        else if (this.old_dx - dx > this.canvas.cellSize / 1.5) {
+            newCell = this.canvas.puzzle.cells[this.cell.row][this.cell.column-1];
             bChange = true;
         }
     }
     else {
-        if (dy - dragData.old_dy > canvas.cellSize / 1.5) {
-            newCell = canvas.puzzle.cells[dragData.thisCell.row+1][dragData.thisCell.column];
+        if (dy - this.old_dy > this.canvas.cellSize / 1.5) {
+            newCell = this.canvas.puzzle.cells[this.cell.row+1][this.cell.column];
             bChange = true;
         }
-        else if (dragData.old_dy - dy > canvas.cellSize / 1.5) {
-            newCell = canvas.puzzle.cells[dragData.thisCell.row-1][dragData.thisCell.column];
+        else if (this.old_dy - dy > this.canvas.cellSize / 1.5) {
+            newCell = this.canvas.puzzle.cells[this.cell.row-1][this.cell.column];
             bChange = true;
         }
     }
     if (bChange) {
-        if (newCell.number == dragData.thisCell.number + 1) {
-            dragData.thisCell.number = -1;
+        if (newCell.number == this.cell.number + 1) {
+            this.cell.number = -1;
             newCell.number++;
-            dragData.thisCell.element.undrag();
-            dragData.thisCell.element.untouchstart();
-            dragData.thisCell.element.untouchmove();
-            canvas.render(Snap('#mainGrid'));
+            this.cell.element.undrag();
+            this.cell.element.untouchstart();
+            this.cell.element.untouchmove();
+            this.canvas.render(Snap('#mainGrid'));
         }   
     } else {
-        position = canvas.position(dragData.thisCell);
-        dragData.thisCell.element.attr('x', position.x + dx);
-        dragData.thisCell.element.attr('y', position.y + dy);
+        position = this.canvas.position(this.cell);
+        this.cell.element.attr('x', position.x + dx);
+        this.cell.element.attr('y', position.y + dy);
     }
             
-    if (canvas.puzzle.isSolved()) {
-        canvas.puzzle.boardElement.attr({ fill: "#f9f" });
+    if (this.canvas.puzzle.isSolved()) {
+        this.canvas.puzzle.boardElement.attr({ fill: "#f9f" });
         $("#btnNextPuzzle").show();
         $("#txtPuzzleHint").hide();
     }
 } 
 
-var touchMove = function(event) {
-    cx = event.targetTouches.item(0).clientX - dragData.touchStart_x;
-    cy = event.targetTouches.item(0).clientY - dragData.touchStart_y;
-    dragMove(cx, cy);
+cRakeDragController.prototype.touchMove = function(event) {
+    cx = event.targetTouches.item(0).clientX - this.touchStart_x;
+    cy = event.targetTouches.item(0).clientY - this.touchStart_y;
+    this.dragMove(cx, cy);
 }
 
 
-var dragStart = function (cell) {
-    dragData.old_dy = 0;
-    dragData.old_dx = 0;
-    dragData.thisCell = cell;
+cRakeDragController.prototype.dragStart = function () {
+    this.old_dy = 0;
+    this.old_dx = 0;
 }
 
 
-var touchStart = function (event, cell) {
-    dragStart(cell);
-    dragData.touchStart_x = event.targetTouches.item(0).clientX;
-    dragData.touchStart_y = event.targetTouches.item(0).clientY;
+cRakeDragController.prototype.touchStart = function (event) {
+    dragStart();
+    this.touchStart_x = event.targetTouches.item(0).clientX;
+    this.touchStart_y = event.targetTouches.item(0).clientY;
 }
 
 
-var dragStop = function () {
-    position = canvas.position(dragData.thisCell);
-    dragData.thisCell.element.attr('x', position.x);
-    dragData.thisCell.element.attr('y', position.y);
+cRakeDragController.prototype.dragStop = function () {
+    position = this.canvas.position(this.cell);
+    this.cell.element.attr('x', position.x);
+    this.cell.element.attr('y', position.y);
 }
 
-var touchStop = function(event) {
-  dragStop();
+cRakeDragController.prototype.touchStop = function(event) {
+  this.dragStop();
 }
 
 cRakeCanvas = function (puzzle) {
@@ -188,11 +193,12 @@ cRakeCanvas.prototype.drawCell = function (cell) {
     }
     cell.lines = lines;
     cell.element = this.drawNumber(position, cell.number);
-    cell.element.drag(dragMove, function() {dragStart(cell);}, dragStop);
-    cell.element.touchstart(function(event) {touchStart(event, cell);});
-    cell.element.touchmove(touchMove);
-    cell.element.touchcancel(touchStop);
-    cell.element.touchend(touchStop);
+    var drag = new cRakeDragController(this, cell);
+    cell.element.drag((dx, dy) => drag.dragMove(dx, dy), () => drag.dragStart(), () => drag.dragStop());
+    cell.element.touchstart(event => drag.touchStart(event));
+    cell.element.touchmove(event => drag.touchMove(event));
+    cell.element.touchcancel(event => drag.touchStop(event));
+    cell.element.touchend(event => drag.touchStop(event));
 }
 
 cRakeCanvas.prototype.drawNumber = function (position, number) {
