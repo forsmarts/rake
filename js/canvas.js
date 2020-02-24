@@ -61,14 +61,18 @@ cRakeCanvas.prototype.markSolved = function () {
 
 cRakeCanvas.prototype.drawGoal = function (goal) {
     var n = 0;
+    var goalElement = this.snap.group();
     goal.forEach(oneGoal => {
         position = {
             x: this.PADDING + n * this.V_OFFSET,
             y: this.PADDING
-        }         
-        this.snap.image(this.IMAGES[oneGoal], position.x, position.y, this.V_OFFSET * this.IMAGE_SIZE, this.V_OFFSET * this.IMAGE_SIZE);
+        }
+        goalElement.add(this.snap.image(this.IMAGES[oneGoal], 
+                                 position.x, position.y,
+                                 this.V_OFFSET * this.IMAGE_SIZE, this.V_OFFSET * this.IMAGE_SIZE));
         n++;
     });
+    return goalElement;
 }
 
 cRakeCanvas.prototype.drawBoard = function (gridYSize, gridXSize) {
