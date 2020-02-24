@@ -135,7 +135,7 @@ cRakeCanvas.prototype.render = function (snap) {
             }
         }
     }
-    this.snap.node.setAttribute("height", this.snap.getBBox().height);
+    this.snap.node.setAttribute("height", this.snap.getBBox().height + 2);
 }
 
 cRakeCanvas.prototype.drawGoal = function (goal) {
