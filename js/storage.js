@@ -12,8 +12,7 @@ cBandsStorage.prototype.addPuzzle = function(data){
 cBandsStorage.prototype.getNext = function(data){
   this.currentPuzzle = Math.min(this.currentPuzzle, this.puzzles.length  - 1);
   localStorage.setItem('lastLevel', this.currentPuzzle);
-  return this.puzzles[this.currentPuzzle++];
+  this.currentPuzzle++;
+  return new cRakePuzzle(this.currentPuzzle, this.puzzles[this.currentPuzzle - 1]);
 }
-
-storage = new cBandsStorage();
 

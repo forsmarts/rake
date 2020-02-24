@@ -1,4 +1,6 @@
 // File containing grid data
+var rakeInitData = function(storage) {
+
 storage.addPuzzle({
   "gridSize": [2,1],
   "goal": [3],
@@ -117,3 +119,4 @@ storage.addPuzzle({
   ]
 });
 
+}

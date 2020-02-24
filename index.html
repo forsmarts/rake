@@ -33,17 +33,16 @@
     </div>
 </body>
 <script>
-    //TODO: Remove the variable
-    var canvas;
-    var goal;
     $(document).ready(function () {
+        var storage = new cBandsStorage();
+        rakeInitData(storage);
         var fnNextPuzzle = function () {
-            puzzle = storage.getNext();
+            var puzzle = storage.getNext();
             $("#btnNextPuzzle").hide();
             $("#txtPuzzleHint").text(puzzle.hint || " ");
             $("#txtPuzzleHint").show();
-            $("#levelNumber").text("Level " + storage.currentPuzzle);
-            canvas = new cRakeCanvas(new cRakePuzzle(puzzle));
+            $("#levelNumber").text("Level " + puzzle.number);
+            var canvas = new cRakeCanvas(puzzle);
             canvas.render(Snap('#mainGrid'));
         }
         $("#btnNextPuzzle").click(fnNextPuzzle);

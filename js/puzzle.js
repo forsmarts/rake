@@ -1,6 +1,7 @@
 // Object which represents the puzzle state
 
-var cRakePuzzle = function (data) {
+var cRakePuzzle = function (number, data) {
+    this.number = number;
     this.data = data;
     this.parseData(data);
 }
@@ -9,6 +10,7 @@ cRakePuzzle.prototype.parseData = function (data) {
     this.gridXSize = data.gridSize[0];
     this.gridYSize = data.gridSize[1];
     this.goal = data.goal;
+    this.hint = data.hint;
     var cells = [];
     // create all cells
     for (var y = 0; y < this.gridYSize; y++) {

@@ -1,5 +1,5 @@
 // Object which controls rendering of puzzle to the snap canvas
-cRakeCanvas = function (puzzle) {
+var cRakeCanvas = function (puzzle) {
     this.puzzle = puzzle;
 
     this.IMAGES = {

@@ -1,6 +1,6 @@
 // Object which controls drag/drop
 
-cRakeDragController = function(canvas, cell) {
+var cRakeDragController = function(canvas, cell) {
   this.MOVE_LIMIT = 0.75;
 
   this.sourceCell = cell;
