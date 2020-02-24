@@ -33,6 +33,7 @@ cRakeDragController.prototype.dragMove = function (dx, dy) {
 } 
 
 cRakeDragController.prototype.touchMove = function(event) {
+    event.preventDefault();
     cx = event.targetTouches.item(0).clientX - this.touchStart_x;
     cy = event.targetTouches.item(0).clientY - this.touchStart_y;
     this.dragMove(cx, cy);
@@ -44,6 +45,7 @@ cRakeDragController.prototype.dragStart = function () {
 
 
 cRakeDragController.prototype.touchStart = function (event) {
+    event.preventDefault();
     this.dragStart();
     this.touchStart_x = event.targetTouches.item(0).clientX;
     this.touchStart_y = event.targetTouches.item(0).clientY;
