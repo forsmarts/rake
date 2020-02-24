@@ -1,57 +1,45 @@
 // Object which controls drag/drop
 
 cRakeDragController = function(canvas, cell) {
-  this.cell = cell;
+  this.MOVE_LIMIT = 0.75;
+
+  this.sourceCell = cell;
   this.canvas = canvas;
-  this.old_dx = 0;
-  this.old_dy = 0;
+  this.puzzle = this.canvas.puzzle;
   this.touchStart_x = 0;
   this.touchStart_y = 0;
 }
 
 cRakeDragController.prototype.dragMove = function (dx, dy) {
-    var bChange = false;
-    var newCell;
-    if (Math.abs(dx)>Math.abs(dy)) {
-        if (dx - this.old_dx > this.canvas.cellSize / 1.5) {
-            newCell = this.canvas.puzzle.cells[this.cell.row][this.cell.column+1];
-            bChange = true;
-        }
-        else if (this.old_dx - dx > this.canvas.cellSize / 1.5) {
-            newCell = this.canvas.puzzle.cells[this.cell.row][this.cell.column-1];
-            bChange = true;
-        }
+    var targetCell;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > this.canvas.cellSize * this.MOVE_LIMIT) {
+        targetCell = this.puzzle.cells[this.sourceCell.row][this.sourceCell.column + Math.sign(dx)];
     }
-    else {
-        if (dy - this.old_dy > this.canvas.cellSize / 1.5) {
-            newCell = this.canvas.puzzle.cells[this.cell.row+1][this.cell.column];
-            bChange = true;
-        }
-        else if (this.old_dy - dy > this.canvas.cellSize / 1.5) {
-            newCell = this.canvas.puzzle.cells[this.cell.row-1][this.cell.column];
-            bChange = true;
-        }
+    if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > this.canvas.cellSize * this.MOVE_LIMIT) {
+        targetCell = this.puzzle.cells[this.sourceCell.row + Math.sign(dy)][this.sourceCell.column];
     }
-    if (bChange) {
-        if (newCell.number == this.cell.number + 1) {
-            this.cell.number = -1;
-            newCell.number++;
-            this.cell.element.undrag();
-            this.cell.element.untouchstart();
-            this.cell.element.untouchmove();
-            this.canvas.render(Snap('#mainGrid'));
-        }   
-    } else {
-        position = this.canvas.position(this.cell);
-        this.cell.element.attr('x', position.x + dx);
-        this.cell.element.attr('y', position.y + dy);
+    if (!targetCell) {
+        // Animate drag
+        position = this.canvas.position(this.sourceCell);
+        this.sourceCell.element.attr('x', position.x + dx);
+        this.sourceCell.element.attr('y', position.y + dy);
+        return;
     }
-            
-    if (this.canvas.puzzle.isSolved()) {
-        this.canvas.puzzle.boardElement.attr({ fill: "#f9f" });
+    if (targetCell.number == this.sourceCell.number + 1) {
+        // Finish drag to target
+        this.sourceCell.number = -1;
+        targetCell.number++;
+        this.sourceCell.element.undrag();
+        this.sourceCell.element.untouchstart();
+        this.sourceCell.element.untouchmove();
+        this.canvas.render(Snap('#mainGrid'));
+    }   
+    if (this.puzzle.isSolved()) {
+        this.puzzle.boardElement.attr({ fill: "#f9f" });
         $("#btnNextPuzzle").show();
         $("#txtPuzzleHint").hide();
     }
+            
 } 
 
 cRakeDragController.prototype.touchMove = function(event) {
@@ -62,8 +50,6 @@ cRakeDragController.prototype.touchMove = function(event) {
 
 
 cRakeDragController.prototype.dragStart = function () {
-    this.old_dy = 0;
-    this.old_dx = 0;
 }
 
 
@@ -75,9 +61,9 @@ cRakeDragController.prototype.touchStart = function (event) {
 
 
 cRakeDragController.prototype.dragStop = function () {
-    position = this.canvas.position(this.cell);
-    this.cell.element.attr('x', position.x);
-    this.cell.element.attr('y', position.y);
+    position = this.canvas.position(this.sourceCell);
+    this.sourceCell.element.attr('x', position.x);
+    this.sourceCell.element.attr('y', position.y);
 }
 
 cRakeDragController.prototype.touchStop = function(event) {
