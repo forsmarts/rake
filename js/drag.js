@@ -22,10 +22,8 @@ cRakeDragController.prototype.dragMove = function (dx, dy) {
         // Animate drag
         return this.canvas.shiftCell(this.sourceCell, dx, dy);
     }
-    if (targetCell.number == this.sourceCell.number + 1) {
+    if (this.puzzle.joinCells(this.sourceCell, targetCell)) {
         // Finish drag to target
-        this.sourceCell.number = -1;
-        targetCell.number++;
         this.canvas.detachEvents(this.sourceCell);
         this.canvas.reRender();
         if (this.puzzle.isSolved()) {

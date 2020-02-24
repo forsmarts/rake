@@ -12,11 +12,8 @@ cRakePuzzle.prototype.parseData = function (data) {
     var cells = [];
     // create all cells
     for (var y = 0; y < this.gridYSize; y++) {
-
         cells[y] = new Array(this.gridXSize);
-
         for (var x = 0; x < this.gridXSize; x++) {
-
             cells[y][x] = new cRakeCell(x, y, data.numbers[y][x]);
         }
     }
@@ -37,4 +34,13 @@ cRakePuzzle.prototype.isSolved = function () {
         }
     }
     return nCountNumbers==this.goal.length;
+}
+
+cRakePuzzle.prototype.joinCells = function (sourceCell, targetCell) {
+    if (targetCell.number == sourceCell.number + 1) {
+        sourceCell.number = -1;
+        targetCell.number++;
+        return true;
+    }
+    return false;
 }
