@@ -103,13 +103,6 @@ cRakeCanvas.prototype.position = function (cell) {
 
 cRakeCanvas.prototype.drawCell = function (cell) {
     position = this.position(cell);
-    var lines = []
-    for (side in this.opposite) {
-        if ((cell.direction != side || cell.isLast) && cell.prevDirection != this.opposite[side]) {
-            lines.push(this.drawInnerBorder(position, side));
-        }
-    }
-    cell.lines = lines;
     cell.element = this.drawNumber(position, cell.number);
 }
 
