@@ -39,7 +39,7 @@ cRakeDragController.prototype.dragMove = function (dx, dy) {
             this.cell.element.undrag();
             this.cell.element.untouchstart();
             this.cell.element.untouchmove();
-            // this.canvas.render(Snap('#mainGrid'));
+            this.canvas.render(Snap('#mainGrid'));
         }   
     } else {
         position = this.canvas.position(this.cell);
