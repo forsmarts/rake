@@ -20,26 +20,20 @@ cRakeDragController.prototype.dragMove = function (dx, dy) {
     }
     if (!targetCell) {
         // Animate drag
-        position = this.canvas.position(this.sourceCell);
-        this.sourceCell.element.attr('x', position.x + dx);
-        this.sourceCell.element.attr('y', position.y + dy);
-        return;
+        return this.canvas.shiftCell(this.sourceCell, dx, dy);
     }
     if (targetCell.number == this.sourceCell.number + 1) {
         // Finish drag to target
         this.sourceCell.number = -1;
         targetCell.number++;
-        this.sourceCell.element.undrag();
-        this.sourceCell.element.untouchstart();
-        this.sourceCell.element.untouchmove();
-        this.canvas.render(Snap('#mainGrid'));
+        this.canvas.detachEvents(this.sourceCell);
+        this.canvas.reRender();
+        if (this.puzzle.isSolved()) {
+            this.canvas.markSolved();
+            $("#btnNextPuzzle").show();
+            $("#txtPuzzleHint").hide();
+        }
     }   
-    if (this.puzzle.isSolved()) {
-        this.puzzle.boardElement.attr({ fill: "#f9f" });
-        $("#btnNextPuzzle").show();
-        $("#txtPuzzleHint").hide();
-    }
-            
 } 
 
 cRakeDragController.prototype.touchMove = function(event) {
