@@ -37,7 +37,7 @@
     $(document).ready(function () {
         var storage = new cBandsStorage();
         rakeInitData(storage);
-        view = new cRakeView("#levelNumber", '#mainGrid', "#txtPuzzleHint", "#btnNextPuzzle", storage);
+        view = new cRakeView("#levelNumber", '#mainGrid', "#txtPuzzleHint", "#btnNextPuzzle", () => view.show(storage.getNext()));
         view.show(storage.getNext());
     });
 

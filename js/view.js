@@ -1,20 +1,21 @@
 //
 
-var cRakeView = function(headerId, gridId, hintId, buttonId, storage) {
+var cRakeView = function(headerId, gridId, hintId, buttonId, onNext) {
     this.headerElement = $(headerId);
     this.gridId = gridId;
     this.hintElement = $(hintId);
     this.buttonElement = $(buttonId);
     this.buttonElement.click(()=>this.nextPuzzle());
-    this.storage = storage;
+    this.onNext = onNext;
 }
 
 cRakeView.prototype.show = function(puzzle) {
     this.buttonElement.hide();
     this.hintElement.text(puzzle.hint || " ");
     this.hintElement.show();
-    this.headerElement.text("Level " + puzzle.number);
-    new cRakeCanvas(this, puzzle).render(Snap(this.gridId));
+    this.headerElement.text(puzzle.header() || " ");
+    this.canvas = new cRakeCanvas(this, puzzle);
+    this.canvas.render(Snap(this.gridId));
 }
 
 cRakeView.prototype.markSolved = function () {
@@ -23,6 +24,6 @@ cRakeView.prototype.markSolved = function () {
 }
 
 cRakeView.prototype.nextPuzzle = function () {
-    this.show(this.storage.getNext());
+    this.onNext();
 }
 

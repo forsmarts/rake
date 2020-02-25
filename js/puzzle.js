@@ -46,3 +46,7 @@ cRakePuzzle.prototype.joinCells = function (sourceCell, targetCell) {
     }
     return false;
 }
+
+cRakePuzzle.prototype.header = function() {
+    return "Level " + this.number;
+}
