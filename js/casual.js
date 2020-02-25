@@ -30,6 +30,5 @@ cRakeCasual.prototype.joinCells = function (sourceCell, targetCell) {
 }
 
 cRakeCasual.prototype.header = function() {
-    console.log(this);
     return "Random " + this.level + "x" + this.level;
 }
