@@ -10,6 +10,7 @@
     <script src="js/data.js"></script>
     <script src="js/cell.js"></script>
     <script src="js/puzzle.js"></script>
+    <script src="js/casual.js"></script>
     <script src="js/drag.js"></script>
     <script src="js/canvas.js"></script>
     <script src="js/view.js"></script>
@@ -35,10 +36,17 @@
 </body>
 <script>
     $(document).ready(function () {
-        var storage = new cBandsStorage();
-        rakeInitData(storage);
-        view = new cRakeView("#levelNumber", '#mainGrid', "#txtPuzzleHint", "#btnNextPuzzle", () => view.show(storage.getNext()));
-        view.show(storage.getNext());
+        var type = new URL(window.location.href).searchParams.get("t");
+        if (type=="c" || type=="causal") {
+            var level = 4;
+            view = new cRakeView("#levelNumber", '#mainGrid', "#txtPuzzleHint", "#btnNextPuzzle", () => view.show(new cRakeCasual(++level)));
+            view.show(new cRakeCasual(level));
+        } else {
+            var storage = new cBandsStorage();
+            rakeInitData(storage);
+            view = new cRakeView("#levelNumber", '#mainGrid', "#txtPuzzleHint", "#btnNextPuzzle", () => view.show(storage.getNext()));
+            view.show(storage.getNext());
+        }
     });
 
 </script>
