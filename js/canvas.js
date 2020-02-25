@@ -57,7 +57,7 @@ cRakeCanvas.prototype.reRender = function () {
 }
 
 cRakeCanvas.prototype.markSolved = function () {
-    this.puzzle.boardElement.attr({ fill: "#f9f" });
+    this.puzzle.boardElement.animate({ fill: "#f9f" }, 500);
     this.parent.markSolved()
 }
 
