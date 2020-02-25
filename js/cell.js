@@ -5,4 +5,5 @@ var cRakeCell = function(column, row, number){
   this.row = row;
   // defalt number in the cell
   this.number = number;
+  this.isNew = true
 }

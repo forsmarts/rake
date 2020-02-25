@@ -24,6 +24,7 @@ cRakeCasual.prototype.randomData = function () {
 cRakeCasual.prototype.joinCells = function (sourceCell, targetCell) {
     if (cRakePuzzle.prototype.joinCells.call(this, sourceCell, targetCell)) {
 	sourceCell.number = 1 + Math.floor(Math.random() * 3);
+        sourceCell.isNew = true;
         return true;
     }
     return false;

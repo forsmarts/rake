@@ -105,12 +105,18 @@ cRakeCanvas.prototype.position = function (cell) {
 
 cRakeCanvas.prototype.drawCell = function (cell) {
     position = this.position(cell);
-    cell.element = this.drawNumber(position, cell.number);
+    cell.element = this.drawNumber(position, cell.number, cell.isNew);
+    cell.isNew = false;
 }
 
-cRakeCanvas.prototype.drawNumber = function (position, number) {
+cRakeCanvas.prototype.drawNumber = function (position, number, animate) {
     imageurl = this.IMAGES[number];
-    var image = this.snap.image(imageurl, position.x, position.y, this.imageSize, this.imageSize);
+    if (animate) {
+        var image = this.snap.image(imageurl, position.x + this.imageSize/2, position.y + this.imageSize/2, 0, 0);
+        image.animate({x: position.x, y: position.y, width: this.imageSize, height: this.imageSize}, 500)
+    } else {
+        var image = this.snap.image(imageurl, position.x, position.y, this.imageSize, this.imageSize);
+    }
     return image;
 }
 
