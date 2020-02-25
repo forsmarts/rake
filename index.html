@@ -1,10 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Rake</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <h1 id="levelNumber"></h1>
+        </div>
+        <div class="row justify-content-center">
+            <svg id="mainGrid" width="550" height="600" class="my-3"/>
+        </div>
+        <div class="row justify-content-center">
+            <h3 id="txtPuzzleHint"></h3>
+            <span id="btnNextPuzzle" class="btn btn-primary btn-lg">Go to next puzzle</span>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
     <script src="js/snap.svg-min.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/data.js"></script>
@@ -14,25 +36,6 @@
     <script src="js/drag.js"></script>
     <script src="js/canvas.js"></script>
     <script src="js/view.js"></script>
-
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
-    <div class="container">
-        <div class="row text-center">
-            <h1 id="levelNumber"></h1>
-        </div>
-        <div class="row text-center">
-            <svg id="mainGrid" width="550" height="600" />
-        </div>
-        <div class="row text-center">
-            <h3 id="txtPuzzleHint"></h3>
-        </div>
-        <div class="row text-center">
-            <span id="btnNextPuzzle" class="btn btn-primary btn-lg">Go to next puzzle</span>
-        </div>
-    </div>
 </body>
 <script>
     $(document).ready(function () {
