@@ -38,7 +38,7 @@
     $(document).ready(function () {
         var type = new URL(window.location.href).searchParams.get("t");
         if (type=="c" || type=="causal") {
-            var level = 4;
+            var level = 3;
             view = new cRakeView("#levelNumber", '#mainGrid', "#txtPuzzleHint", "#btnNextPuzzle", () => view.show(new cRakeCasual(++level)));
             view.show(new cRakeCasual(level));
         } else {
