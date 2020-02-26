@@ -60,7 +60,6 @@ cRakeCanvas.prototype.reRender = function () {
         }
     }
     this.snap.node.setAttribute("height", this.snap.getBBox().height + 2 * this.PADDING);
-    this.puzzle.boardElement.touchstart(e => {if (e.cancelable) e.preventDefault();});
     this.puzzle.boardElement.touchmove(e => e.preventDefault());
 }
 
