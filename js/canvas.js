@@ -72,7 +72,7 @@ cRakeCanvas.prototype.drawGoal = function (goal) {
     var n = 0;
     var goalElement = this.snap.group();
     goal.forEach(oneGoal => {
-        position = {
+        var position = {
             x: this.PADDING + n * this.V_OFFSET,
             y: this.PADDING
         }
@@ -111,7 +111,7 @@ cRakeCanvas.prototype.position = function (cell) {
 }
 
 cRakeCanvas.prototype.drawCell = function (cell) {
-    position = this.position(cell);
+    var position = this.position(cell);
     if (cell.cellType == cRakeCell.REGULAR) {
         var imageurl = this.REGULAR_IMAGES[cell.number];
     } else if (cell.cellType == cRakeCell.WILDCARD) {
@@ -131,7 +131,7 @@ cRakeCanvas.prototype.drawCell = function (cell) {
 }
 
 cRakeCanvas.prototype.shiftCell = function (cell, dx, dy) {
-    position = this.position(cell);
+    var position = this.position(cell);
     cell.element.attr('x', position.x + dx);
     cell.element.attr('y', position.y + dy);
 }
@@ -141,7 +141,7 @@ cRakeCanvas.prototype.attachEvents = function (cell) {
     cell.element.drag((dx, dy) => drag.dragMove(dx, dy), () => drag.dragStart(), () => drag.dragStop());
     cell.element.touchstart(event => drag.touchStart(event));
     cell.element.touchmove(event => drag.touchMove(event));
-//    cell.element.touchcancel(event => drag.touchStop(event));
+    cell.element.touchcancel(event => drag.touchStop(event));
     cell.element.touchend(event => drag.touchStop(event));
 }
 
@@ -149,7 +149,7 @@ cRakeCanvas.prototype.detachEvents = function (cell) {
     cell.element.undrag();
     cell.element.untouchstart();
     cell.element.untouchmove();
-//    cell.element.untouchcancel();
+    cell.element.untouchcancel();
     cell.element.untouchend();
 }
 

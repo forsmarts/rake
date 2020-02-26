@@ -33,7 +33,9 @@ cRakeDragController.prototype.dragMove = function (dx, dy) {
 } 
 
 cRakeDragController.prototype.touchMove = function(event) {
-    event.preventDefault();
+    if(event.cancelable)
+	event.preventDefault();
+    event.stopPropagation();
     cx = event.targetTouches.item(0).clientX - this.touchStart_x;
     cy = event.targetTouches.item(0).clientY - this.touchStart_y;
     this.dragMove(cx, cy);
@@ -45,7 +47,9 @@ cRakeDragController.prototype.dragStart = function () {
 
 
 cRakeDragController.prototype.touchStart = function (event) {
-    event.preventDefault();
+    if(event.cancelable)
+	event.preventDefault();
+    event.stopPropagation();
     this.dragStart();
     this.touchStart_x = event.targetTouches.item(0).clientX;
     this.touchStart_y = event.targetTouches.item(0).clientY;
@@ -53,12 +57,18 @@ cRakeDragController.prototype.touchStart = function (event) {
 
 
 cRakeDragController.prototype.dragStop = function () {
-    position = this.canvas.position(this.sourceCell);
+    var position = this.canvas.position(this.sourceCell);
     this.sourceCell.element.attr('x', position.x);
     this.sourceCell.element.attr('y', position.y);
 }
 
 cRakeDragController.prototype.touchStop = function(event) {
-  this.dragStop();
+    if(event.cancelable)
+	event.preventDefault();
+    event.stopPropagation();
+    this.dragStop();
+    this.touchStart_x = 0;
+    this.touchStart_y = 0;
+    console.log('touchStop 2', event.cancelable)
 }
 
