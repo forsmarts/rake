@@ -3,27 +3,34 @@ var cRakeCanvas = function (parent, puzzle) {
     this.parent = parent;
     this.puzzle = puzzle;
 
-    this.IMAGES = {
-        "1": "images/number1.png",
-        "2": "images/number2.png",
-        "3": "images/number3.png",
-        "4": "images/number4.png",
-        "5": "images/number5.png",
-        "6": "images/number6.png",
-        "7": "images/number7.png",
-        "8": "images/number8.png",
-        "9": "images/number9.png",
-        "10": "images/number10.png",
-        "11": "images/number11.png",
-        "12": "images/number12.png",
-        "13": "images/number13.png",
-        "14": "images/number14.png",
-        "15": "images/number15.png",
-        "16": "images/number16.png",
-        "17": "images/number17.png",
-        "18": "images/number18.png",
-        "19": "images/number19.png",
-        "20": "images/number20.png"
+    this.REGULAR_IMAGES = {
+        1: "images/number1.png",
+        2: "images/number2.png",
+        3: "images/number3.png",
+        4: "images/number4.png",
+        5: "images/number5.png",
+        6: "images/number6.png",
+        7: "images/number7.png",
+        8: "images/number8.png",
+        9: "images/number9.png",
+        10: "images/number10.png",
+        11: "images/number11.png",
+        12: "images/number12.png",
+        13: "images/number13.png",
+        14: "images/number14.png",
+        15: "images/number15.png",
+        16: "images/number16.png",
+        17: "images/number17.png",
+        18: "images/number18.png",
+        19: "images/number19.png",
+        20: "images/number20.png"
+    }
+
+    this.WILDCARD_IMAGES = {
+        "-1": "images/minus1.png",
+        "-2": "images/minus2.png",
+        1: "images/plus1.png",
+        2: "images/plus2.png",
     }
     // Size of images
     this.IMAGE_SIZE = 0.7;
@@ -47,8 +54,7 @@ cRakeCanvas.prototype.reRender = function () {
     for (var y = 0; y < this.puzzle.gridYSize; y++) {
         for (var x = 0; x < this.puzzle.gridXSize; x++) {
 
-            if (this.puzzle.cells[y][x].number > 0) {
-                this.drawCell(this.puzzle.cells[y][x]);
+            if (this.drawCell(this.puzzle.cells[y][x])){
                 this.attachEvents(this.puzzle.cells[y][x]);
             }
         }
@@ -69,7 +75,7 @@ cRakeCanvas.prototype.drawGoal = function (goal) {
             x: this.PADDING + n * this.V_OFFSET,
             y: this.PADDING
         }
-        goalElement.add(this.snap.image(this.IMAGES[oneGoal], 
+        goalElement.add(this.snap.image(this.REGULAR_IMAGES[oneGoal], 
                                  position.x, position.y,
                                  this.V_OFFSET * this.IMAGE_SIZE, this.V_OFFSET * this.IMAGE_SIZE));
         n++;
@@ -105,19 +111,22 @@ cRakeCanvas.prototype.position = function (cell) {
 
 cRakeCanvas.prototype.drawCell = function (cell) {
     position = this.position(cell);
-    cell.element = this.drawNumber(position, cell.number, cell.isNew);
-    cell.isNew = false;
-}
-
-cRakeCanvas.prototype.drawNumber = function (position, number, animate) {
-    imageurl = this.IMAGES[number];
-    if (animate) {
-        var image = this.snap.image(imageurl, position.x + this.imageSize/2, position.y + this.imageSize/2, 0, 0);
-        image.animate({x: position.x, y: position.y, width: this.imageSize, height: this.imageSize}, 500)
-    } else {
-        var image = this.snap.image(imageurl, position.x, position.y, this.imageSize, this.imageSize);
+    if (cell.cellType == cRakeCell.REGULAR) {
+        var imageurl = this.REGULAR_IMAGES[cell.number];
+    } else if (cell.cellType == cRakeCell.WILDCARD) {
+        var imageurl = this.WILDCARD_IMAGES[cell.number];
     }
-    return image;
+    if (!imageurl) {
+        return false;
+    }
+    if (cell.isNew) {
+        cell.element = this.snap.image(imageurl, position.x + this.imageSize/2, position.y + this.imageSize/2, 0, 0);
+        cell.element.animate({x: position.x, y: position.y, width: this.imageSize, height: this.imageSize}, 500)
+    } else {
+        cell.element = this.snap.image(imageurl, position.x, position.y, this.imageSize, this.imageSize);
+    }
+    cell.isNew = false;
+    return true;
 }
 
 cRakeCanvas.prototype.shiftCell = function (cell, dx, dy) {
