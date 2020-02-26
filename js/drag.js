@@ -69,6 +69,5 @@ cRakeDragController.prototype.touchStop = function(event) {
     this.dragStop();
     this.touchStart_x = 0;
     this.touchStart_y = 0;
-    console.log('touchStop 2', event.cancelable)
 }
 
