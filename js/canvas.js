@@ -60,7 +60,6 @@ cRakeCanvas.prototype.reRender = function () {
         }
     }
     this.snap.node.setAttribute("height", this.snap.getBBox().height + 2 * this.PADDING);
-    this.puzzle.boardElement.animate({ fill: "#f9f" }, 500);
     this.puzzle.boardElement.touchmove(e => e.preventDefault());
 }
 
@@ -142,7 +141,7 @@ cRakeCanvas.prototype.attachEvents = function (cell) {
     cell.element.drag((dx, dy) => drag.dragMove(dx, dy), () => drag.dragStart(), () => drag.dragStop());
     cell.element.touchstart(event => drag.touchStart(event));
     cell.element.touchmove(event => drag.touchMove(event));
-    cell.element.touchcancel(event => drag.touchStop(event));
+//    cell.element.touchcancel(event => drag.touchStop(event));
     cell.element.touchend(event => drag.touchStop(event));
 }
 
@@ -150,7 +149,7 @@ cRakeCanvas.prototype.detachEvents = function (cell) {
     cell.element.undrag();
     cell.element.untouchstart();
     cell.element.untouchmove();
-    cell.element.untouchcancel();
+//    cell.element.untouchcancel();
     cell.element.untouchend();
 }
 
