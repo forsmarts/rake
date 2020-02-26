@@ -14,8 +14,7 @@ cRakeCasual.prototype.randomData = function () {
     for (var y = 0; y < this.gridYSize; y++) {
         cells[y] = new Array(this.gridXSize);
         for (var x = 0; x < this.gridXSize; x++) {
-            var randomValue = 1 + Math.floor(Math.random() * 3);  
-            cells[y][x] = new cRakeCell(x, y, randomValue);
+            cells[y][x] = this.randomCell(x, y);
         }
     }
     this.cells = cells;
@@ -23,8 +22,7 @@ cRakeCasual.prototype.randomData = function () {
 
 cRakeCasual.prototype.joinCells = function (sourceCell, targetCell) {
     if (cRakePuzzle.prototype.joinCells.call(this, sourceCell, targetCell)) {
-	sourceCell.number = 1 + Math.floor(Math.random() * 3);
-        sourceCell.isNew = true;
+	sourceCell.copyFrom(this.randomCell(sourceCell.x, sourceCell.y));
         return true;
     }
     return false;
@@ -32,4 +30,16 @@ cRakeCasual.prototype.joinCells = function (sourceCell, targetCell) {
 
 cRakeCasual.prototype.header = function() {
     return "Random " + this.level + "x" + this.level;
+}
+
+cRakeCasual.prototype.randomCell = function(x, y) {
+    var randomValue = Math.floor(Math.random() * 10)-1;
+    console.log(randomValue);
+    if (randomValue==-1) {
+        return new cRakeCell(x, y, -1, cRakeCell.WILDCARD);
+    } else if (randomValue==0 || randomValue==1) {
+        return new cRakeCell(x, y, 1, cRakeCell.WILDCARD);
+    } else {
+        return new cRakeCell(x, y, 1 + randomValue%2, cRakeCell.REGULAR);
+    }
 }

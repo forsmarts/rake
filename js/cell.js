@@ -9,6 +9,12 @@ var cRakeCell = function(column, row, number, cellType){
     this.cellType = cellType;
 }
 
+cRakeCell.prototype.copyFrom = function(cell) {
+    this.number = cell.number;
+    this.isNew = cell.isNew;
+    this.cellType = cell.cellType;
+}
+
 cRakeCell.EMPTY = 0;
 cRakeCell.REGULAR = 1;
 cRakeCell.WILDCARD = 2;
