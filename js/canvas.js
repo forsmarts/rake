@@ -60,6 +60,7 @@ cRakeCanvas.prototype.reRender = function () {
         }
     }
     this.snap.node.setAttribute("height", this.snap.getBBox().height + 2 * this.PADDING);
+    this.puzzle.boardElement.animate({ fill: "#f9f" }, 500);
     this.puzzle.boardElement.touchmove(e => e.preventDefault());
 }
 
@@ -87,7 +88,7 @@ cRakeCanvas.prototype.drawGoal = function (goal) {
 cRakeCanvas.prototype.drawBoard = function (gridYSize, gridXSize) {
     var board = this.snap.rect(this.PADDING, this.V_OFFSET + this.PADDING, gridXSize * this.cellSize, gridYSize * this.cellSize);
     board.attr({
-        fill: "#eee",
+        fill: "#fff",
         stroke: "#000",
         strokeWidth: 5
     })
