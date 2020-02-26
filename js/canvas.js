@@ -60,10 +60,8 @@ cRakeCanvas.prototype.reRender = function () {
         }
     }
     this.snap.node.setAttribute("height", this.snap.getBBox().height + 2 * this.PADDING);
-    this.puzzle.boardElement.touchstart(event => event.preventDefault());
-    this.puzzle.boardElement.touchmove(event => event.preventDefault());
-    this.puzzle.boardElement.touchcancel(event => event.preventDefault());
-    this.puzzle.boardElement.touchend(event => event.preventDefault());
+    this.puzzle.boardElement.touchstart(e => {if (e.cancelable) e.preventDefault();});
+    this.puzzle.boardElement.touchmove(e => e.preventDefault());
 }
 
 cRakeCanvas.prototype.markSolved = function () {
