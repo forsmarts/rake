@@ -87,7 +87,7 @@ cRakeCanvas.prototype.drawGoal = function (goal) {
 cRakeCanvas.prototype.drawBoard = function (gridYSize, gridXSize) {
     var board = this.snap.rect(this.PADDING, this.V_OFFSET + this.PADDING, gridXSize * this.cellSize, gridYSize * this.cellSize);
     board.attr({
-        fill: "#fff",
+        fill: "#eee",
         stroke: "#000",
         strokeWidth: 5
     })
