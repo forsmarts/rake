@@ -85,12 +85,22 @@ cRakeCanvas.prototype.drawGoal = function (goal) {
 }
 
 cRakeCanvas.prototype.drawBoard = function (gridYSize, gridXSize) {
-    var board = this.snap.rect(this.PADDING, this.V_OFFSET + this.PADDING, gridXSize * this.cellSize, gridYSize * this.cellSize);
+    this.boardLeft = this.PADDING;
+    this.boardRight = this.boardLeft + gridXSize * this.cellSize;
+    this.boardTop = this.V_OFFSET + this.PADDING;
+    this.boardBottom = this.boardTop + gridYSize * this.cellSize;
+    var board = this.snap.rect(this.boardLeft, this.boardTop, gridXSize * this.cellSize, gridYSize * this.cellSize);
     board.attr({
         fill: "#fff",
         stroke: "#000",
         strokeWidth: 5
-    })
+    });
+    if (this.puzzle.isToroidal) {
+        board.attr({
+            strokeDasharray : "0 15",
+            strokeLinecap : "round",
+        });
+    }
     return board;
 }
 
@@ -132,8 +142,22 @@ cRakeCanvas.prototype.drawCell = function (cell) {
 
 cRakeCanvas.prototype.shiftCell = function (cell, dx, dy) {
     var position = this.position(cell);
-    cell.element.attr('x', position.x + dx);
-    cell.element.attr('y', position.y + dy);
+    newX = position.x + dx;
+    newY = position.y + dy;
+    if (this.puzzle.isToroidal) {
+        if (newX > this.boardRight - this.imageSize/2) {
+            newX = newX - this.boardRight + this.boardLeft;
+        } else if (newX < this.boardLeft - this.imageSize/2) {
+            newX = newX + this.boardRight - this.boardLeft;
+        }
+        if (newY > this.boardBottom - this.imageSize/2) {
+            newY = newY - this.boardBottom + this.boardTop;
+        } else if (newY < this.boardTop - this.imageSize/2) {
+            newY = newY + this.boardBottom - this.boardTop;
+        }
+    }
+    cell.element.attr('x', newX);
+    cell.element.attr('y', newY);
 }
 
 cRakeCanvas.prototype.attachEvents = function (cell) {

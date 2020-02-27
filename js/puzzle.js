@@ -11,6 +11,7 @@ cRakePuzzle.prototype.parseData = function (data) {
     this.gridYSize = data.gridSize[1];
     this.goal = data.goal;
     this.hint = data.hint;
+    this.isToroidal = data.toroidal;
     var cells = [];
     // create all cells
     for (var y = 0; y < this.gridYSize; y++) {

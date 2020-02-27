@@ -1,7 +1,7 @@
 // Object which controls drag/drop
 
 var cRakeDragController = function(canvas, cell) {
-  this.MOVE_LIMIT = 0.75;
+  this.MOVE_LIMIT = 0.7;
 
   this.sourceCell = cell;
   this.canvas = canvas;
@@ -13,10 +13,22 @@ var cRakeDragController = function(canvas, cell) {
 cRakeDragController.prototype.dragMove = function (dx, dy) {
     var targetCell;
     if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > this.canvas.cellSize * this.MOVE_LIMIT) {
-        targetCell = this.puzzle.cells[this.sourceCell.row][this.sourceCell.column + Math.sign(dx)];
+        var i = this.sourceCell.column + Math.sign(dx);
+        if (this.puzzle.isToroidal) {
+            i = i >= this.puzzle.gridXSize ? 0 : i < 0 ? this.puzzle.gridXSize - 1 : i;
+        }
+        if (i >= 0 && i < this.puzzle.gridXSize) {
+            targetCell = this.puzzle.cells[this.sourceCell.row][i];
+        }
     }
     if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > this.canvas.cellSize * this.MOVE_LIMIT) {
-        targetCell = this.puzzle.cells[this.sourceCell.row + Math.sign(dy)][this.sourceCell.column];
+        var j = this.sourceCell.row + Math.sign(dy);
+        if (this.puzzle.isToroidal) {
+            j = j >= this.puzzle.gridYSize ? 0 : j < 0 ? this.puzzle.gridYSize - 1 : j;
+        }
+        if (j >= 0 && j < this.puzzle.gridYSize) {
+            targetCell = this.puzzle.cells[j][this.sourceCell.column];
+        }
     }
     if (!targetCell) {
         // Animate drag

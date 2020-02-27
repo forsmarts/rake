@@ -51,6 +51,29 @@ storage.addPuzzle({
 });
 
 storage.addPuzzle({
+  "gridSize": [3,3],
+  "goal": [5],
+  "hint": "Puzzle can be toroidal - in this case tile moved towards one edge appears from another",
+  "toroidal": true,
+  "numbers": [
+    [ , ,1],
+    [ , , ],
+    [4, ,2]
+  ]
+});
+
+storage.addPuzzle({
+  "gridSize": [3,3],
+  "goal": [7],
+  "toroidal": true,
+  "numbers": [
+    [2, ,1],
+    [ ,4,1],
+    [4,4,2]
+  ]
+});
+
+storage.addPuzzle({
   "gridSize": [4,4],
   "goal": [8],
   "numbers": [
