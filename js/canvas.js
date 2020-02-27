@@ -32,6 +32,9 @@ var cRakeCanvas = function (parent, puzzle) {
         1: "images/plus1.png",
         2: "images/plus2.png",
     }
+
+    this.SPECIAL_IMAGES = {};
+    this.SPECIAL_IMAGES[cRakeCell.PUSH] = "images/push.png";
     // Size of images
     this.IMAGE_SIZE = 0.7;
     // Free space over the grid to show goals and stats
@@ -126,7 +129,9 @@ cRakeCanvas.prototype.drawCell = function (cell) {
         var imageurl = this.REGULAR_IMAGES[cell.number];
     } else if (cell.cellType == cRakeCell.WILDCARD) {
         var imageurl = this.WILDCARD_IMAGES[cell.number];
-    }
+    } else {
+        var imageurl = this.SPECIAL_IMAGES[cell.cellType];
+    } 
     if (!imageurl) {
         return false;
     }

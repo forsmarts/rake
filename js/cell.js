@@ -18,4 +18,6 @@ cRakeCell.prototype.copyFrom = function(cell) {
 cRakeCell.EMPTY = 0;
 cRakeCell.REGULAR = 1;
 cRakeCell.WILDCARD = 2;
+cRakeCell.PUSH = 3;
+
 

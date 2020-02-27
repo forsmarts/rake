@@ -74,6 +74,29 @@ storage.addPuzzle({
 });
 
 storage.addPuzzle({
+  "gridSize": [3,3],
+  "goal": [7],
+  "hint": "Pusher moves all tiles on a row or a column",
+  "numbers": [
+    ["p",1,2],
+    [ , ,2],
+    [4,5,4]
+  ]
+});
+
+storage.addPuzzle({
+  "gridSize": [3,3],
+  "goal": [8],
+  "hint": "At toroidal grid pushed tiles appears from other end",
+  "toroidal": true,
+  "numbers": [
+    ["p",3,5],
+    [1,4,5],
+    [2,2,4]
+  ]
+});
+
+storage.addPuzzle({
   "gridSize": [4,4],
   "goal": [8],
   "numbers": [
