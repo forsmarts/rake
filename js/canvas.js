@@ -37,7 +37,7 @@ var cRakeCanvas = function (parent, puzzle) {
     // Free space over the grid to show goals and stats
     this.V_OFFSET = 50;
     // additional space around the canvas to fit wide lines
-    this.PADDING = 2;
+    this.PADDING = 15;
 }
 
 cRakeCanvas.prototype.render = function (snap) {
