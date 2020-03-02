@@ -41,7 +41,13 @@ var cRakeCanvas = function (parent, puzzle) {
     this.V_OFFSET = 50;
     // additional space around the canvas to fit wide lines
     this.PADDING = 15;
+
+    this.preloadImages(this.REGULAR_IMAGES);
+    this.preloadImages(this.WILDCARD_IMAGES);
+    this.preloadImages(this.SPECIAL_IMAGES);
 }
+
+
 
 cRakeCanvas.prototype.render = function (snap) {
     this.snap = snap;
@@ -182,4 +188,8 @@ cRakeCanvas.prototype.detachEvents = function (cell) {
     cell.element.untouchend();
 }
 
-
+cRakeCanvas.prototype.preloadImages = function(imageMap) {
+    for (let [key, value] of Object.entries(imageMap)) {
+        new Image().src = value;
+    }
+}
