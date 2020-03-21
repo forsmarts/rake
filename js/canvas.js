@@ -70,6 +70,7 @@ cRakeCanvas.prototype.reRender = function () {
     }
     this.snap.node.setAttribute("height", this.snap.getBBox().height + 2 * this.PADDING);
     this.puzzle.boardElement.touchmove(e => e.preventDefault());
+    this.snap.node.parentNode.addEventListener("touchmove", e => e.preventDefault());
 }
 
 cRakeCanvas.prototype.markSolved = function () {
