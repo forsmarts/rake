@@ -32,7 +32,8 @@ cRakeDragController.prototype.dragMove = function (dx, dy) {
     }
     if (!targetCell) {
         // Animate drag
-        return this.canvas.shiftCell(this.sourceCell, dx, dy);
+        this.canvas.shiftCell(this.sourceCell, dx, dy);
+        return;
     }
     if (this.puzzle.joinCells(this.sourceCell, targetCell)) {
         // Finish drag to target
@@ -59,6 +60,9 @@ cRakeDragController.prototype.dragStart = function () {
 
 
 cRakeDragController.prototype.touchStart = function (event) {
+    drag = this;
+    this.onMove = function(event){drag.touchMove(event);};
+    window.addEventListener("touchmove", this.onMove, {passive: false});
     if(event.cancelable)
 	event.preventDefault();
     event.stopPropagation();
@@ -75,6 +79,7 @@ cRakeDragController.prototype.dragStop = function () {
 }
 
 cRakeDragController.prototype.touchStop = function(event) {
+    window.removeEventListener("touchmove", this.onMove);
     if(event.cancelable)
 	event.preventDefault();
     event.stopPropagation();

@@ -175,7 +175,6 @@ cRakeCanvas.prototype.attachEvents = function (cell) {
     var drag = new cRakeDragController(this, cell);
     cell.element.drag((dx, dy) => drag.dragMove(dx, dy), () => drag.dragStart(), () => drag.dragStop());
     cell.element.touchstart(event => drag.touchStart(event));
-    cell.element.touchmove(event => drag.touchMove(event));
     cell.element.touchcancel(event => drag.touchStop(event));
     cell.element.touchend(event => drag.touchStop(event));
 }
@@ -183,7 +182,6 @@ cRakeCanvas.prototype.attachEvents = function (cell) {
 cRakeCanvas.prototype.detachEvents = function (cell) {
     cell.element.undrag();
     cell.element.untouchstart();
-    cell.element.untouchmove();
     cell.element.untouchcancel();
     cell.element.untouchend();
 }
