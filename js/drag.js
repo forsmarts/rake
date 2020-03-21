@@ -37,6 +37,7 @@ cRakeDragController.prototype.dragMove = function (dx, dy) {
     }
     if (this.puzzle.joinCells(this.sourceCell, targetCell)) {
         // Finish drag to target
+        window.removeEventListener("touchmove", this.onMove);
         this.canvas.detachEvents(this.sourceCell);
         this.canvas.reRender();
         if (this.puzzle.isSolved()) {
