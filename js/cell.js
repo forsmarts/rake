@@ -1,6 +1,7 @@
 // Object which represents one cell of a puzzle
 
-var cRakeCell = function(column, row, number, cellType){
+var cRakeCell = function(puzzle, column, row, number, cellType){
+    this.puzzle = puzzle;
     this.column = column;
     this.row = row;
     // defalt number in the cell

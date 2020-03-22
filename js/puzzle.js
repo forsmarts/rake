@@ -4,6 +4,7 @@ var cRakePuzzle = function (number, data) {
     this.number = number;
     this.data = data;
     this.parseData(data);
+    this.canvas = null;
 }
 
 cRakePuzzle.prototype.parseData = function (data) {
@@ -18,13 +19,13 @@ cRakePuzzle.prototype.parseData = function (data) {
         cells[y] = new Array(this.gridXSize);
         for (var x = 0; x < this.gridXSize; x++) {
             if (typeof data.numbers[y][x] === "number") {
-	       cells[y][x] = new cRakeCell(x, y, data.numbers[y][x], cRakeCell.REGULAR);
+	       cells[y][x] = new cRakeCell(this, x, y, data.numbers[y][x], cRakeCell.REGULAR);
             } else if (typeof data.numbers[y][x] === "string" && !isNaN(data.numbers[y][x])) {
-	       cells[y][x] = new cRakeCell(x, y, parseInt(data.numbers[y][x]), cRakeCell.WILDCARD);
+	       cells[y][x] = new cRakeCell(this, x, y, parseInt(data.numbers[y][x]), cRakeCell.WILDCARD);
             } else if (data.numbers[y][x] === "p") {
-	       cells[y][x] = new cRakeCell(x, y, null, cRakeCell.PUSH);
+	       cells[y][x] = new cRakeCell(this, x, y, null, cRakeCell.PUSH);
             } else {
-	       cells[y][x] = new cRakeCell(x, y, null, cRakeCell.EMPTY);
+	       cells[y][x] = new cRakeCell(this, x, y, null, cRakeCell.EMPTY);
             }
         }
     }

@@ -15,6 +15,7 @@ cRakeView.prototype.show = function(puzzle) {
     this.hintElement.show();
     this.headerElement.text(puzzle.header() || " ");
     this.canvas = new cRakeCanvas(this, puzzle);
+    puzzle.canvas = this.canvas;
     this.canvas.render(Snap(this.gridId));
 }
 
