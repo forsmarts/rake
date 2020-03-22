@@ -35,14 +35,17 @@ cRakeDragController.prototype.dragMove = function (dx, dy) {
         this.canvas.shiftCell(this.sourceCell, dx, dy);
         return;
     }
-    if (this.puzzle.joinCells(this.sourceCell, targetCell)) {
+    var joinResult = this.puzzle.joinCells(this.sourceCell, targetCell);
+    if (joinResult >= 0) {
         // Finish drag to target
         window.removeEventListener("touchmove", this.onMove);
         this.canvas.detachEvents(this.sourceCell);
-        this.canvas.reRender();
-        if (this.puzzle.isSolved()) {
-            this.canvas.markSolved();
-        }
+        setTimeout(() => {
+            this.canvas.reRender();
+            if (this.puzzle.isSolved()) {
+                this.canvas.markSolved();
+            }
+        }, joinResult);
     }   
 } 
 

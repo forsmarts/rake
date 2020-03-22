@@ -51,21 +51,20 @@ cRakePuzzle.prototype.isSolved = function () {
 }
 
 cRakePuzzle.prototype.joinCells = function (sourceCell, targetCell) {
+    // Returns required delay for redraw
     if (targetCell.cellType == cRakeCell.REGULAR 
         && sourceCell.cellType == cRakeCell.REGULAR
         && targetCell.number == sourceCell.number + 1) {
         targetCell.number++;
-        sourceCell.number = null;
-        sourceCell.cellType = cRakeCell.EMPTY;
-        return true;
+        sourceCell.clear();
+        return 0;
     }
     if (targetCell.cellType == cRakeCell.REGULAR 
         && sourceCell.cellType == cRakeCell.WILDCARD
         && targetCell.number + sourceCell.number > 0) {
         targetCell.number += sourceCell.number;
-        sourceCell.number = null;
-        sourceCell.cellType = cRakeCell.EMPTY;
-        return true;
+        sourceCell.clear();
+        return 0;
     }
     if (targetCell.cellType != cRakeCell.EMPTY 
         && sourceCell.cellType == cRakeCell.PUSH) {
@@ -83,12 +82,10 @@ cRakePuzzle.prototype.joinCells = function (sourceCell, targetCell) {
                index = nextIndex;
             }
             if (!this.isToroidal) {
-                sourceCell.number = null;
-                sourceCell.cellType = cRakeCell.EMPTY;
+                sourceCell.clear();
             }
-            targetCell.number = null;
-            targetCell.cellType = cRakeCell.EMPTY;
-            return true;
+            targetCell.clear();
+            return 150;
         }
         if (targetCell.column == sourceCell.column) {
             if (this.isToroidal) {
@@ -104,15 +101,13 @@ cRakePuzzle.prototype.joinCells = function (sourceCell, targetCell) {
                index = nextIndex;
             }
             if (!this.isToroidal) {
-                sourceCell.number = null;
-                sourceCell.cellType = cRakeCell.EMPTY;
+                sourceCell.clear();
             }
-            targetCell.number = null;
-            targetCell.cellType = cRakeCell.EMPTY;
-            return true;
+            targetCell.clear();
+            return 150;
         }
     }
-    return false;
+    return -1;
 }
 
 cRakePuzzle.prototype.header = function() {

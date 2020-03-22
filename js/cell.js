@@ -14,6 +14,17 @@ cRakeCell.prototype.copyFrom = function(cell) {
     this.number = cell.number;
     this.isNew = cell.isNew;
     this.cellType = cell.cellType;
+    if (this.puzzle.canvas != null) {
+        this.puzzle.canvas.animateCell(this, cell);
+    }
+}
+
+cRakeCell.prototype.clear = function() {
+    this.cellType = cRakeCell.EMPTY;
+    this.number = null;
+    if (this.puzzle.canvas != null) {
+        this.puzzle.canvas.clearCell(this);
+    }
 }
 
 cRakeCell.EMPTY = 0;

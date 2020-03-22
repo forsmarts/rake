@@ -131,7 +131,10 @@ cRakeCanvas.prototype.position = function (cell) {
 }
 
 cRakeCanvas.prototype.drawCell = function (cell) {
-    var position = this.position(cell);
+    return this.drawCellAt(cell, this.position(cell));
+}
+
+cRakeCanvas.prototype.drawCellAt = function (cell, position) {
     if (cell.cellType == cRakeCell.REGULAR) {
         var imageurl = this.REGULAR_IMAGES[cell.number];
     } else if (cell.cellType == cRakeCell.WILDCARD) {
@@ -140,6 +143,7 @@ cRakeCanvas.prototype.drawCell = function (cell) {
         var imageurl = this.SPECIAL_IMAGES[cell.cellType];
     } 
     if (!imageurl) {
+
         return false;
     }
     if (cell.isNew) {
@@ -170,6 +174,20 @@ cRakeCanvas.prototype.shiftCell = function (cell, dx, dy) {
     }
     cell.element.attr('x', newX);
     cell.element.attr('y', newY);
+}
+
+cRakeCanvas.prototype.animateCell = function (cell, fromCell) {
+    this.clearCell(cell);
+    var fromPosition = this.position(fromCell);
+    var toPosition = this.position(cell);
+    if (this.drawCellAt(cell, fromPosition)) {
+        cell.element.animate({x: toPosition.x, y: toPosition.y}, 150)
+    }
+}
+
+cRakeCanvas.prototype.clearCell = function (cell) {
+    cell.element.attr('width', 0);
+    cell.element.attr('height', 0);
 }
 
 cRakeCanvas.prototype.attachEvents = function (cell) {
