@@ -143,7 +143,6 @@ cRakeCanvas.prototype.drawCellAt = function (cell, position) {
         var imageurl = this.SPECIAL_IMAGES[cell.cellType];
     } 
     if (!imageurl) {
-
         return false;
     }
     if (cell.isNew) {
@@ -180,8 +179,32 @@ cRakeCanvas.prototype.animateCell = function (cell, fromCell) {
     this.clearCell(cell);
     var fromPosition = this.position(fromCell);
     var toPosition = this.position(cell);
+    var needMiddle = false;
+    if (this.puzzle.isToroidal) {
+        var middle1Position = {x: (fromPosition.x + toPosition.x)/2, y: (fromPosition.y + toPosition.y)/2};
+        var middle2Position = {x: (fromPosition.x + toPosition.x)/2, y: (fromPosition.y + toPosition.y)/2};
+        if(2*Math.abs(fromPosition.x - toPosition.x) > this.puzzle.gridXSize * this.cellSize) {
+             needMiddle = true;
+             middle1Position.x = fromPosition.x < toPosition.x ? fromPosition.x - this.cellSize/2 : fromPosition.x + this.cellSize/2;
+             middle2Position.x = fromPosition.x < toPosition.x ? toPosition.x + this.cellSize/2 : toPosition.x - this.cellSize/2;
+        }
+        if(2*Math.abs(fromPosition.y - toPosition.y) > this.puzzle.gridYSize * this.cellSize) {
+             needMiddle = true;
+             middle1Position.y = fromPosition.y < toPosition.y ? fromPosition.y - this.cellSize/2 : fromPosition.y + this.cellSize/2;
+             middle2Position.y = fromPosition.y < toPosition.y ? toPosition.y + this.cellSize/2 : toPosition.y - this.cellSize/2;
+        }
+    }
     if (this.drawCellAt(cell, fromPosition)) {
-        cell.element.animate({x: toPosition.x, y: toPosition.y}, 150)
+        if (!needMiddle) {
+            cell.element.animate({x: toPosition.x, y: toPosition.y}, 200);
+        } else {
+            cell.element.animate({x: middle1Position.x, y: middle1Position.y}, 100, 
+               ()=> {
+		    this.clearCell(cell);
+                    this.drawCellAt(cell, middle2Position);
+                    cell.element.animate({x: toPosition.x, y: toPosition.y}, 100);
+		});
+        }
     }
 }
 

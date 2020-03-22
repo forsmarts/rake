@@ -76,8 +76,8 @@ cRakePuzzle.prototype.joinCells = function (sourceCell, targetCell) {
             }
             while (index != targetCell.column) {
                var nextIndex = index + sourceCell.column - targetCell.column;
-               if (nextIndex < 0) nextIndex = this.gridXSize - 1;
-               if (nextIndex >= this.gridXSize) nextIndex = 0;
+               if (nextIndex < 0) nextIndex = this.gridXSize + nextIndex;
+               if (nextIndex >= this.gridXSize) nextIndex = nextIndex - this.gridXSize;
                this.cells[sourceCell.row][index].copyFrom(this.cells[sourceCell.row][nextIndex])
                index = nextIndex;
             }
@@ -85,7 +85,7 @@ cRakePuzzle.prototype.joinCells = function (sourceCell, targetCell) {
                 sourceCell.clear();
             }
             targetCell.clear();
-            return 150;
+            return 200;
         }
         if (targetCell.column == sourceCell.column) {
             if (this.isToroidal) {
@@ -95,8 +95,8 @@ cRakePuzzle.prototype.joinCells = function (sourceCell, targetCell) {
             }
             while (index != targetCell.row) {
                var nextIndex = index + sourceCell.row - targetCell.row;
-               if (nextIndex < 0) nextIndex = this.gridYSize - 1;
-               if (nextIndex >= this.gridYSize) nextIndex = 0;
+               if (nextIndex < 0) nextIndex = this.gridYSize + nextIndex;
+               if (nextIndex >= this.gridYSize) nextIndex = nextIndex - this.gridYSize;
                this.cells[index][sourceCell.column].copyFrom(this.cells[nextIndex][sourceCell.column])
                index = nextIndex;
             }
@@ -104,7 +104,7 @@ cRakePuzzle.prototype.joinCells = function (sourceCell, targetCell) {
                 sourceCell.clear();
             }
             targetCell.clear();
-            return 150;
+            return 200;
         }
     }
     return -1;
