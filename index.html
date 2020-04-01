@@ -45,7 +45,9 @@
             view = new cRakeView("#levelNumber", '#mainGrid', "#txtPuzzleHint", "#btnNextPuzzle", () => view.show(new cRakeCasual(++level)));
             view.show(new cRakeCasual(level));
         } else {
+            var level = new URL(window.location.href).searchParams.get("l");
             var storage = new cBandsStorage();
+            if (level) storage.currentPuzzle = parseInt(level)-1;
             rakeInitData(storage);
             view = new cRakeView("#levelNumber", '#mainGrid', "#txtPuzzleHint", "#btnNextPuzzle", () => view.show(storage.getNext()));
             view.show(storage.getNext());
