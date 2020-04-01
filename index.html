@@ -20,6 +20,9 @@
         </div>
         <div class="row justify-content-center">
             <h4 id="txtPuzzleHint"></h4>
+        </div>
+        <div class="row justify-content-center">
+            <span id="btnRestart" class="btn btn-primary btn-lg">Restart puzzle</span>
             <span id="btnNextPuzzle" class="btn btn-primary btn-lg">Go to next puzzle</span>
         </div>
     </div>
@@ -42,14 +45,15 @@
         var type = new URL(window.location.href).searchParams.get("t");
         if (type=="c" || type=="causal") {
             var level = 3;
-            view = new cRakeView("#levelNumber", '#mainGrid', "#txtPuzzleHint", "#btnNextPuzzle", () => view.show(new cRakeCasual(++level)));
+            view = new cRakeView("#levelNumber", '#mainGrid', "#txtPuzzleHint", "#btnNextPuzzle", null, () => view.show(new cRakeCasual(++level)));
             view.show(new cRakeCasual(level));
         } else {
             var level = new URL(window.location.href).searchParams.get("l");
             var storage = new cBandsStorage();
             if (level) storage.currentPuzzle = parseInt(level)-1;
             rakeInitData(storage);
-            view = new cRakeView("#levelNumber", '#mainGrid', "#txtPuzzleHint", "#btnNextPuzzle", () => view.show(storage.getNext()));
+            view = new cRakeView("#levelNumber", '#mainGrid', "#txtPuzzleHint", "#btnNextPuzzle", "#btnRestart",
+                                 () => view.show(storage.getNext()), () => view.show(storage.get()));
             view.show(storage.getNext());
         }
     });

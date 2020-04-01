@@ -16,3 +16,8 @@ cBandsStorage.prototype.getNext = function(data){
   return new cRakePuzzle(this.currentPuzzle, this.puzzles[this.currentPuzzle - 1]);
 }
 
+cBandsStorage.prototype.get = function(data){
+  return new cRakePuzzle(this.currentPuzzle, this.puzzles[this.currentPuzzle - 1]);
+}
+
+
