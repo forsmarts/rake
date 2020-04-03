@@ -53,7 +53,7 @@ storage.addPuzzle({
 storage.addPuzzle({
   "gridSize": [3,3],
   "goal": [5],
-  "hint": "Puzzle can be toroidal - in this case tile moved towards one edge appears from another",
+  "hint": "Puzzle can be toroidal - in this case a tile moved towards one edge appears from another",
   "toroidal": true,
   "numbers": [
     [ , ,1],
@@ -76,7 +76,7 @@ storage.addPuzzle({
 storage.addPuzzle({
   "gridSize": [3,3],
   "goal": [7],
-  "hint": "Pusher moves all tiles on a row or a column",
+  "hint": "Pusher moves all the tiles in the row or column",
   "numbers": [
     ["p",1,2],
     [ , ,2],
@@ -87,7 +87,7 @@ storage.addPuzzle({
 storage.addPuzzle({
   "gridSize": [3,3],
   "goal": [8],
-  "hint": "At toroidal grid pushed tiles appears from other end",
+  "hint": "In toroidal grid the pushed over tile appears from the other end",
   "toroidal": true,
   "numbers": [
     ["p",3,5],
@@ -144,7 +144,7 @@ storage.addPuzzle({
 storage.addPuzzle({
   "gridSize": [5,3],
   "goal": [8],
-  "hint": "Modifying tiles will change the number on the ajdacent tile accordingly, if they're moved towards it",
+  "hint": "Modifying tiles will change the number on the ajdacent tile accordingly when moved towards it",
   "numbers": [
     [2,3,4,2,1],
     [1,2,4,"+1", ],
@@ -198,5 +198,44 @@ storage.addPuzzle({
     [1,2,4,2,1]
   ]
 });
+
+storage.addPuzzle({
+  "toroidal": true,
+  "gridSize": [5,5],
+  "goal": [5,5,5,5,5],
+  "numbers": [
+    [1,2,2,1, ],
+    [2,1,2,2,2],
+    [2,1,2,3,1],
+    [1, ,2,2,1],
+    [2,1,2,2,3]
+  ]
+});
+
+storage.addPuzzle({
+  "gridSize": [5,5],
+  "goal": [8,8],
+  "numbers": [
+    [3,3,2, , ],
+    [3,5,2,"+1", ],
+    [2,3,3,3,"p"],
+    [3,4,5,4,3],
+    [2,"+1",3,2, ]
+  ]
+});
+
+storage.addPuzzle({
+  "toroidal": true,
+  "gridSize": [5,5],
+  "goal": [11],
+  "numbers": [
+    ["p",2,2,5,7],
+    [3,3,5,7,6],
+    [2,3,4,7,5],
+    [2,2,2,"p",3],
+    [2,1,1,5,3]
+  ]
+});
+
 
 }
