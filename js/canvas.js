@@ -209,8 +209,10 @@ cRakeCanvas.prototype.animateCell = function (cell, fromCell) {
 }
 
 cRakeCanvas.prototype.clearCell = function (cell) {
-    cell.element.attr('width', 0);
-    cell.element.attr('height', 0);
+    if (cell.element) {
+      cell.element.attr('width', 0);
+      cell.element.attr('height', 0);
+    }
 }
 
 cRakeCanvas.prototype.attachEvents = function (cell) {
